@@ -1,0 +1,36 @@
+[meta title:"Stack Scroll" description:"Tutorial on Stacked Scrolling" /]
+
+
+// Scroller Tutorial
+[var name:"barStep" value:0 /]
+[Scroller currentStep:barStep]
+
+  [Step]
+    [Header
+        title:"Stacking Scroller Components"
+        subtitle:"Introduction to leveraging multiple Scrollers in Idyll"
+        author:"Yuzhe You"
+        authorLink:"FIXME"/]
+    [div className:"line"][/div]
+    [br/]
+
+    [div className:"text"]
+        ## Testing
+        Let's see if this works.
+    [/div]
+  [/Step]
+  
+  [Graphic]
+      // Tie barStep to img class
+      [img src:"static/images/bar.svg"
+            className:`barStep === 0 ? "bar" : "bar rotate" + barStep `/]
+  [/Graphic]
+
+  [Step]
+    The **bar** on the right belongs to this first Scroller component. 
+    
+    Let's first look at how we can animate **within** a Scroller. Watch how it rotates 
+    as you move to the next step.
+  [/Step]
+
+[/Scroller]
