@@ -23,8 +23,12 @@
     [div className:"text"]
         ## INTRODUCTION
         Though deep learning models have achieved remarkable success in diverse domains (e.g., faicial recognition, autonomous driving),
-        these models have been proven to be quite brittle to perturbations around the input data.
-        *Adversarial machine learning* (AML) studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strength model robustness. 
+        these models have been proven to be quite brittle to perturbations around the input data. 
+        [span className:"emphasize"]Adversarial machine learning (AML)[/span] studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strength model robustness. 
+        Specifically for image classification,it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that not human-interpretable, 
+        as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
+        This guide will utilize interative visualizations to provide a non-expert introduction into adversarial attacks, 
+        and provide comparisons of two popular attacks on different CNNs. 
     [/div]
   [/Step]
 
