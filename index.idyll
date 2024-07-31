@@ -4,8 +4,7 @@
 [var name:"barStep" value:0 /]
 [Scroller currentStep:barStep]
 
-  [Graphic]
-  [/Graphic]
+  [Graphic][/Graphic]
 
   [Step]
 
@@ -33,10 +32,15 @@
   [/Step]
 
   [Step]
-    The **bar** on the right belongs to this first Scroller component. 
-    
-    Let's first look at how we can animate **within** a Scroller. Watch how it rotates 
-    as you move to the next step.
+    [div className:"text"]
+      ## FROM THE VERY BEGINNING
+      In 2014, Goodfellow et al. showed that an adversarial image of a [span className:"emphasize"]panda[/span] could fool GoogLeNet into classifying it as [span className:"emphasize"]gibbon[/span] with high confidence, 
+      leading to the birth of AML research. 
+      An adversarial [span className:"emphasize"]"evasion" attack[/span] produces adversarial examples that are crafted with small, indistinguishable perturbations with the goal to result in model prediction errors, such as image misclassifications. 
+    [/div]
+    [figure]
+      [img src:"static/images/tut1.png" className:"img_" /]
+    [/figure]
   [/Step]
 
 [/Scroller]
