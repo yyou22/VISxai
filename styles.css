@@ -48,9 +48,9 @@ img{
 }
 
 .line {
-  background-color: black;
-  height: 0.10em;
-  margin-bottom: 4vh;
+  border-top: 5px dotted #8a358f; /* Adjust the border width and color as needed */
+  height: 0; /* Ensures the height does not affect the line */
+  margin-bottom: 3vh;
 }
 
 .arrow {
@@ -70,8 +70,10 @@ img{
 
 /* Some text and pre formatting */
 a {
-  text-decoration: underline;
-  color: black;
+  text-decoration: underline; /* Ensures there is an underline */
+  text-decoration-color: #c58b27; /* Custom color for the underline */
+  text-decoration-thickness: 3px; /* Custom thickness for the underline */
+  color: black; /* Text color */
 }
 
 figcaption {
@@ -120,8 +122,12 @@ h3 {
   font-size: 1.3em;
 }
 
+.idyll-pub-date {
+  font-size: 1.3em;
+}
+
 .text p {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .emphasize {

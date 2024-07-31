@@ -12,6 +12,7 @@
     [CustomHeader
         title:"Panda or Gibbon? How CNNs Get Fooled by Input Noises"
         subtitle:"A Beginner's Introduction to Adversarial Attacks"
+        date:"July 31, 2024"
         authors:`[
         { name: "Yuzhe You", link: "FIXME" },
         { name: "Jian Zhao", link: "FIXME" }
@@ -20,8 +21,10 @@
     [div className:"line"][/div]
 
     [div className:"text"]
-        ## Introduction
-        Let's see if this works.
+        ## INTRODUCTION
+        Though deep learning models have achieved remarkable success in diverse domains (e.g., faicial recognition, autonomous driving),
+        these models have been proven to be quite brittle to perturbations around the input data.
+        *Adversarial machine learning* (AML) studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strength model robustness. 
     [/div]
   [/Step]
 
