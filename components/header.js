@@ -9,9 +9,9 @@ class Header extends React.PureComponent {
         </h1>
         {
           this.props.subtitle && (
-            <h2 className={'dek'}>
+            <div className={'sub_title'}>
               {this.props.subtitle}
-            </h2>
+            </div>
           )
         }
         {

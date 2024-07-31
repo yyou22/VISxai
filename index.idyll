@@ -1,30 +1,29 @@
-[meta title:"Stack Scroll" description:"Tutorial on Stacked Scrolling" /]
-
+[meta title:"Intro to Adversarial Attacks" description:"A Beginner's Introduction to Adversarial Attacks" /]
 
 // Scroller Tutorial
 [var name:"barStep" value:0 /]
 [Scroller currentStep:barStep]
 
+  [Graphic]
+  [/Graphic]
+
   [Step]
+
     [Header
-        title:"Stacking Scroller Components"
-        subtitle:"Introduction to leveraging multiple Scrollers in Idyll"
-        author:"Yuzhe You"
-        authorLink:"FIXME"/]
+        title:"Panda or Gibbon? How CNNs Get Fooled by Input Noises"
+        subtitle:"A Beginner's Introduction to Adversarial Attacks"
+        authors:`[
+        { name: "Yuzhe You", link: "FIXME" },
+        { name: "Jian Zhao", link: "FIXME" }
+        ]` /]
+
     [div className:"line"][/div]
-    [br/]
 
     [div className:"text"]
-        ## Testing
+        ## Introduction
         Let's see if this works.
     [/div]
   [/Step]
-  
-  [Graphic]
-      // Tie barStep to img class
-      [img src:"static/images/bar.svg"
-            className:`barStep === 0 ? "bar" : "bar rotate" + barStep `/]
-  [/Graphic]
 
   [Step]
     The **bar** on the right belongs to this first Scroller component. 

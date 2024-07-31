@@ -1,12 +1,28 @@
 /* Formatting text portion for tutorial */
+
+@font-face {
+  font-family: 'VCR';
+  src: url('VCR_OSD_MONO_1.001.ttf') format('truetype');
+  font-weight: bolder;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pixellari';
+  src: url('Pixellari.ttf') format('truetype');
+  font-weight: bolder;
+  font-style: normal;
+}
+
 .gif {
   margin-top: 3vh;
   width: 60vw;
 }
 
 .article-header {
-  margin-top: 15vh;
+  margin-top: 5vh;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .line {
@@ -32,8 +48,8 @@
 
 /* Some text and pre formatting */
 a {
-  color: #5BAFC1;
   text-decoration: underline;
+  color: black;
 }
 
 figcaption {
@@ -45,17 +61,24 @@ figcaption p {
   font-size: 0.8em !important;
 }
 
-h1, h2, h3 {
-  font-family: Verdana, Geneva, sans-serif;
+h1 {
+  font-size: 2.7em;
+  font-family: 'Pixellari', 'Arvo';
 }
 
-h1 {
-  font-size: 2.5em;
+.sub_title {
+  font-size: 1.6em;
+  color: #c58b27;
+  border-bottom: none;
+  padding-bottom: 10px;
+  font-weight: bold;
 }
 
 h2 {
-  font-size: 1.5em;
-  color: #5BAFC1;
+  font-size: 1.8em;
+  border-bottom: none;
+  color: #6a3e7c;
+  font-family: 'Pixellari', 'Arvo';
 }
 
 h3 {
@@ -63,16 +86,15 @@ h3 {
 }
 
 .byline {
-  font-size: 0.9em;
+  font-size: 1.3em;
 }
 
-.text p, .idyll-step {
-  font-family: 'Open Sans', Verdana, Geneva, sans-serif;
-  font-size: 14px;
+.text p {
+  font-size: 18px;
 }
 
 .emphasize {
-  background-color: rgb(248, 241, 201);
+  /*background-color: rgb(248, 241, 201);*/
   color: black;
   font-weight: bold;
   font-size: 0.9em;
@@ -84,14 +106,13 @@ h3 {
 }
 
 .idyll-text-container {
-  margin-left: 0 !important;
+  margin-left: 3vw !important;
 }
 
 .idyll-root {
   box-sizing: border-box;
   margin: 0 0;
   padding: 0;
-  margin-bottom: 60px;
 }
 
 /* Some formatting for the scroll and step boxes */
@@ -102,11 +123,17 @@ h3 {
 
 /* Move the steps up and shorten them */
 .idyll-scroll-text .idyll-step {
+  padding: 40px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   position: relative;
-  top: -210vh;
-  padding: 5vw;
-  max-width: 50vw;
-  background: #EFEADD;
+  top: -170vh;
+  max-width: 45vw;
+  margin: 40vh 0 40vh 0;
+  border-radius: 20px;
+  background: #f6f5f1e0;
+  border: 2px solid #4e4250; /* Adds a border */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Adds a drop shadow */
 }
 
 
@@ -129,7 +156,12 @@ h3 {
 
 /* Change graphic background based on Scroller id */
 #idyll-scroll-0 .idyll-scroll-graphic {
-  background: #A082AD;
+  /*background: #A082AD;*/
+  background-color: #805d8f;
+  opacity: 1;
+  background-image:  linear-gradient(30deg, #7b578a 12%, transparent 12.5%, transparent 87%, #7b578a 87.5%, #7b578a), linear-gradient(150deg, #7b578a 12%, transparent 12.5%, transparent 87%, #7b578a 87.5%, #7b578a), linear-gradient(30deg, #7b578a 12%, transparent 12.5%, transparent 87%, #7b578a 87.5%, #7b578a), linear-gradient(150deg, #7b578a 12%, transparent 12.5%, transparent 87%, #7b578a 87.5%, #7b578a), linear-gradient(60deg, #7b578a77 25%, transparent 25.5%, transparent 75%, #7b578a77 75%, #7b578a77), linear-gradient(60deg, #7b578a77 25%, transparent 25.5%, transparent 75%, #7b578a77 75%, #7b578a77);
+  background-size: 20px 35px;
+  background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
 }
 
 #idyll-scroll-1 .idyll-scroll-graphic {
