@@ -48,7 +48,24 @@
     [figure]
       [img src:"static/images/tut1.png" className:"img_" /]
     [/figure]
-    ### What is the FGSM Attack?
+    [div className:"text"]
+      ### What is the FGSM Attack?
+      The panda attack you just saw is called the [span className:"emphasize"]Fast Gradient Sign Method (FGSM)[/span] attack, 
+      one of the first and most known adversarial attacks. 
+      It is a [span className:"emphasize"]white-box attack[/span] (i.e., the attacker has access to model internals) that adjusts the input image by taking a step towards the sign of the backpropagated gradients. 
+      The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss. 
+    [/div]
+    [figure]
+      [img src:"static/images/tut2.png" className:"img_" /]
+    [/figure]
+    [figure]
+      [img src:"static/images/tut3.png" className:"img_" /]
+    [/figure]
+    [div className:"text"]
+      While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
+      Let's take a look at how the FGSM attack alters CNNs' perceptions of image datasets. 
+    [/div]
+
   [/Step]
 
   [Step state:"dataset"]

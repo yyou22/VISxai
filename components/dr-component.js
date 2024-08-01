@@ -76,9 +76,10 @@ class DRComponent extends D3Component {
             .domain([0, 1.0])
             .range([50  * this.width / 500, this.width-50  * this.width / 500])
 
-        window.onbeforeunload = function () {
+        //FIXME
+        /*window.onbeforeunload = function () {
             window.scrollTo(0, 0);
-        }
+        }*/
 
         var x = d3.scaleLinear()
             .domain([0, 1.0])
