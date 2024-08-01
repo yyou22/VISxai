@@ -158,6 +158,7 @@ class DRComponent extends D3Component {
     update(props) {
         
         //this.width = this.node.getBoundingClientRect().width;
+        var width = this.width;
 
         var canvas = d3.select('.canvas');
         var s = canvas.select('.circle_container').selectAll('.circle_group');
@@ -165,6 +166,13 @@ class DRComponent extends D3Component {
         if (props.state !== this.props.state) {
             switch (props.state) {
                 case 'introduction':
+
+                    /*s.transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(2000)
+                        .attr("transform", function(d) {
+                            return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
+                        })*/
 
                     // Define moveInCircles within the introduction case
                     function moveInCircles() {
