@@ -4,10 +4,32 @@ const d3 = require('d3');
 
 var k = 1.0;
 const stroke_color = "#554F5D";
-const stroke_width = 0.5;
-const highlight_stroke_width = 0.7;
+const stroke_width = 1.5;
+var node_;
 
-export function grid(g, x, y) {
+let intervalIDs = [];  // Store interval IDs globally
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export function drawArc(r_, k) {
+    var drawArc = d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(r_ / k)
+                    .startAngle(0.5)
+                    .endAngle(0.5 + Math.PI);
+    return drawArc;
+}
+
+// Function to clear all intervals when needed
+function stopAllMovements() {
+    intervalIDs.forEach(clearInterval);
+    console.log('All movements stopped');
+}
+
+export function grid(g, x, y, node) {
+    var width = node.getBoundingClientRect().width;
     g.attr("stroke", "#d6cad9")
         .call(g => {
             const xLines = g.selectAll(".x")
@@ -16,6 +38,7 @@ export function grid(g, x, y) {
             xLines.enter().append("line")
                 .attr("class", "x")
                 .attr("y2", 1000)
+                .attr("stroke-width", 1 * width / 500)
                 .merge(xLines)
                 .attr("x1", d => 0.5 + x(d))
                 .attr("x2", d => 0.5 + x(d));
@@ -29,27 +52,22 @@ export function grid(g, x, y) {
             yLines.enter().append("line")
                 .attr("class", "y")
                 .attr("x2", 1000)
+                .attr("stroke-width", 1 * width / 500)
                 .merge(yLines)
                 .attr("y1", d => 0.5 + y(d))
                 .attr("y2", d => 0.5 + y(d));
             
             yLines.exit().remove();
         });
-
     return g;
 }
-
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min) ) + min;
-}
-
 
 class DRComponent extends D3Component {
 
     initialize(node, props) {
         this.width = node.getBoundingClientRect().width;
         this.height = this.width;
-        //this.height = window.innerHeight;
+        node_ = node;
 
         var x = d3.scaleLinear()
             .domain([0, 1.0])
@@ -66,14 +84,9 @@ class DRComponent extends D3Component {
             .style('overflow', 'visible')
             .style('cursor', 'crosshair')
 
-        /*canvas.on('click', function() {
-            console.log('clicked');
-        })*/
-
         var i_ = 0;
 
         d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
-
             if (+d.vis == 1) {
                 d.xt = +d.xpost;
                 d.yt = +d.ypost;
@@ -86,43 +99,107 @@ class DRComponent extends D3Component {
                 i_ += 1;
                 return d;
             }
-
         }).then(function(data) {
-
             canvas.append('svg').attr('class', 'grid_container');
             canvas.append('g').attr('class', 'circle_container');
 
             const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
-            grid(gGrid, x, y);
+            grid(gGrid, x, y, node);
 
             var width = node.getBoundingClientRect().width;
 
             var s = canvas.select('.circle_container').selectAll()
-                    .data(data)
-                    .enter()
-                    .append('g')
-                    .attr('class', 'circle_group')
-                    .attr("id", function (d) { return "circle_group" +  d.idx; })
-                    .attr("transform", function(d) {
-                        return "translate(" + getRndInteger(20, width-20)  + "," + getRndInteger(20, width-20)  + ")";
-                    })
-                    .attr('target', function(d){ return d.target;})
-                    .attr('pred', function(d){ return d.pred;})
-                    .attr('selected', 0);
+                .data(data)
+                .enter()
+                .append('g')
+                .attr('class', 'circle_group')
+                .attr('opacity', 0.5)
+                .attr("id", function (d) { return "circle_group" + d.idx; })
+                .attr("transform", function(d) {
+                    return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
+                })
+                .attr('target', function(d) { return d.target; })
+                .attr('pred', function(d) { return d.pred; })
+                .attr('selected', 0);
 
             s.append('circle')
-                    .attr('class', 'dot')
-                    .attr('r', 7/k)
-                    .attr('stroke_', stroke_width)
-                    .attr('strokec_', stroke_color)
-                    .attr('stroke-width', stroke_width/k)
-                    .attr('stroke', stroke_color)
-                    .style("fill", "black")
+                .attr('class', 'dot')
+                .attr('r', 7 / k * width / 500)
+                .attr('stroke_', stroke_width * width / 500)
+                .attr('strokec_', 'black')
+                .attr('stroke-width', stroke_width / k * width / 500)
+                .attr('stroke', stroke_color)
+                .style("fill", "#6C626F");
 
+            s.append("path")
+                .style("fill", "#6C626F")
+                .attr('class', 'arc')
+                .attr('d', drawArc(6.6 * width / 500, k));
+
+            function moveInCircles() {
+                s.each(function(d) {
+                    d.angle += 0.05; // Adjust speed of the circular movement
+                    const transform = d3.select(this).attr("transform");
+                    const match = /translate\(([^,]+),([^,]+)\)/.exec(transform);
+                    if (match) {
+                        const centerX = parseFloat(match[1]);
+                        const centerY = parseFloat(match[2]);
+                        const x = centerX + d.radius * Math.cos(d.angle);
+                        const y = centerY + d.radius * Math.sin(d.angle);
+                        d3.select(this).transition()
+                            .duration(20)
+                            .attr("transform", "translate(" + x + "," + y + ")");
+                    }
+                });
+            }
+
+            // Initialize random angle and radius for each s
+            s.each(function(d) {
+                d.angle = Math.random() * 2 * Math.PI;
+                d.radius = 0.5 + Math.random(); // Random radius between 0.5 and 1.5
+            });
+
+            // Set the interval and store the ID in an array
+            const intervalID = setInterval(moveInCircles, 20);
+            intervalIDs.push(intervalID);
         });
-
     }
 
+    update(props) {
+        this.width = node_.getBoundingClientRect().width;
+        this.height = this.width;
+
+        var x2 = d3.scaleLinear()
+            .domain([0, 1.0])
+            .range([50 * this.width / 500, this.width-50  * this.width / 500])
+        var y2 = d3.scaleLinear()
+            .domain([0, 1.0])
+            .range([50  * this.width / 500, this.height-50  * this.width / 500])
+        
+        if (props.state !== this.props.state) {
+            switch (props.state) {
+                case 'introduction':
+
+                    break;
+
+                case 'beginning':
+                    stopAllMovements(); // Stop all current movements
+                    console.log('beginning animation');
+
+                    var canvas = d3.select('.canvas');
+                    var s = canvas.select('.circle_container').selectAll('.circle_group');
+
+                    s.transition()
+                        .duration(1000)
+                        .attr("transform", function(d) {
+                            return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                        });
+                    break;
+
+                // Add other cases as needed
+            }
+        }
+    }
 }
 
 module.exports = DRComponent;

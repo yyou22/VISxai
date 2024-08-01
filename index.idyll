@@ -12,7 +12,7 @@
 
   [Graphic][/Graphic]
 
-  [Step]
+  [Step state:"introduction"]
 
     [CustomHeader
         title:"Panda or Gibbon? How CNNs Get Fooled by Input Noises"
@@ -37,7 +37,7 @@
     [/div]
   [/Step]
 
-  [Step]
+  [Step state:"beginning"]
     [div className:"text"]
       ## FROM THE VERY BEGINNING
       ### What is an Adversarial Attack?
