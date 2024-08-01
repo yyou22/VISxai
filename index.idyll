@@ -1,8 +1,14 @@
 [meta title:"Intro to Adversarial Attacks" description:"A Beginner's Introduction to Adversarial Attacks" /]
 
-// Scroller Tutorial
-[var name:"barStep" value:0 /]
-[Scroller currentStep:barStep]
+[var name:"scrollState" value:"loading" /]
+[Fixed]
+  [DRComponent
+    state:scrollState
+  /]
+[/Fixed]
+
+//scroller
+[Scroller currentState:scrollState]
 
   [Graphic][/Graphic]
 
@@ -34,6 +40,7 @@
   [Step]
     [div className:"text"]
       ## FROM THE VERY BEGINNING
+      ### What is an Adversarial Attack?
       In 2014, Goodfellow et al. showed that an adversarial image of a [span className:"emphasize"]panda[/span] could fool GoogLeNet into classifying it as [span className:"emphasize"]gibbon[/span] with high confidence, 
       leading to the birth of AML research. 
       An adversarial [span className:"emphasize"]"evasion" attack[/span] produces adversarial examples that are crafted with small, indistinguishable perturbations with the goal to result in model prediction errors, such as image misclassifications. 
@@ -41,6 +48,7 @@
     [figure]
       [img src:"static/images/tut1.png" className:"img_" /]
     [/figure]
+    ### What is the FGSM Attack?
   [/Step]
 
 [/Scroller]
