@@ -142,8 +142,11 @@ class DRComponent extends D3Component {
                 .attr('class', 'circle_group')
                 .attr('opacity', 0.5)
                 .attr("id", function (d) { return "circle_group" + d.idx; })
-                .attr("transform", function(d) {
+                /*.attr("transform", function(d) {
                     return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
+                })*/
+                .attr("transform", function(d) {
+                    return "translate(" + width/2 + "," + width/2 + ")";
                 })
                 .attr('target', function(d) { return d.target; })
                 .attr('pred', function(d) { return d.pred; })
@@ -183,15 +186,27 @@ class DRComponent extends D3Component {
             switch (props.state) {
                 case 'abstract':
 
+                    stopAllMovements();
+
+                    s.transition()
+                        .ease(d3.easeBackIn)
+                        .duration(function() {
+                            return getRndInteger(450, 700); 
+                        })
+                        .attr("transform", function(d) {
+                            return "translate(" + width/2 + "," + width/2 + ")";
+                        });
+
 
                     d3.select('.panda_img')
                         .transition()
                         .ease(d3.easeCubicOut)
-                        .duration(2000)
+                        .duration(1000)
                         .style('opacity', 1)
-                        .on('end', function() {
+                        .style('filter', 'blur(0px)');
+                        /*.on('end', function() {
                             stopAllMovements();
-                        });
+                        });*/
 
                     break;
                 case 'beginning':
@@ -200,14 +215,22 @@ class DRComponent extends D3Component {
                         .transition()
                         .ease(d3.easeCubicOut)
                         .duration(2000)
-                        .style('opacity', 0);
+                        .style('opacity', 0)
+                        .style('filter', 'blur(50px)');              
 
-                    /*s.transition()
-                        .ease(d3.easeCubicOut)
-                        .duration(2000)
+                    s.transition()
+                        .ease(d3.easeBackOut)
+                        .duration(function() {
+                            return getRndInteger(450, 700); 
+                        })
                         .attr("transform", function(d) {
                             return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
-                        })*/
+                        })
+                        .on('end', function(d, i) {
+                            if (i == s.size() - 1) {
+                                intervalIDs.push(setInterval(moveInCircles, 20));
+                            }
+                        });
 
                     // Define moveInCircles within the introduction case
                     function moveInCircles() {
@@ -235,9 +258,7 @@ class DRComponent extends D3Component {
                         d.radius = 0.5 + Math.random(); // Random radius between 0.5 and 1.5
                     });
 
-                    // Set the interval and store the ID in an array
-                    const intervalID = setInterval(moveInCircles, 20);
-                    intervalIDs.push(intervalID);
+                    //intervalIDs.push(setInterval(moveInCircles, 20));
                     break;
 
                 case 'dataset':
@@ -246,7 +267,7 @@ class DRComponent extends D3Component {
 
                     s.transition()
                         .ease(d3.easeCubicOut)
-                        .duration(2000)
+                        .duration(1500)
                         .attr("transform", function(d) {
                             return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
                         });
