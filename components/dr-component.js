@@ -87,13 +87,29 @@ class DRComponent extends D3Component {
             .domain([0, 1.0])
             .range([0, this.height])
 
-        const canvas = d3.select(node).append('svg').attr('class', 'canvas');
-        
-        canvas.attr('viewBox', `0 0 ${this.width} ${this.height}`)
-            .style('width', '100%')
-            .style('height', 'auto')
-            .style('overflow', 'visible')
-            .style('cursor', 'crosshair')
+            const container = d3.select(node).style('position', 'relative');
+
+            const canvas = container.append('svg').attr('class', 'canvas');
+            
+            canvas.attr('viewBox', `0 0 ${this.width} ${this.height}`)
+                .style('width', '100%')
+                .style('height', 'auto')
+                .style('overflow', 'visible')
+                .style('cursor', 'crosshair');
+            
+            const imageUrl = 'static/images/panda_noise.gif'; // Replace with the actual image URL
+            
+            // Append the image to the parent container
+            container.append('img')
+                .attr('src', imageUrl)
+                .attr('class', 'panda_img')
+                .style('position', 'absolute')
+                .style('top', '0')
+                .style('left', '0')
+                .style('width', '100%')
+                .style('height', 'auto')
+                .style('pointer-events', 'none');
+            
 
         var i_ = 0;
 
@@ -165,7 +181,26 @@ class DRComponent extends D3Component {
         
         if (props.state !== this.props.state) {
             switch (props.state) {
-                case 'introduction':
+                case 'abstract':
+
+
+                    d3.select('.panda_img')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(2000)
+                        .style('opacity', 1)
+                        .on('end', function() {
+                            stopAllMovements();
+                        });
+
+                    break;
+                case 'beginning':
+
+                    d3.select('.panda_img')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(2000)
+                        .style('opacity', 0);
 
                     /*s.transition()
                         .ease(d3.easeCubicOut)
@@ -205,7 +240,7 @@ class DRComponent extends D3Component {
                     intervalIDs.push(intervalID);
                     break;
 
-                case 'beginning':
+                case 'dataset':
                     stopAllMovements(); // Stop all current movements
                     console.log('beginning');
 

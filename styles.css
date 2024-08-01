@@ -237,6 +237,13 @@ h3 {
   border: #a5a4a3 6px solid;
 }
 
+.panda_img {
+  border-radius: 20px;
+  border: #a5a4a3 6px solid;
+  overflow: hidden !important;
+  box-sizing: border-box;
+}
+
 /* Decrease the margin depending on window size for steps */
 /*@media only screen and (min-width: 600px) {
   .gif {

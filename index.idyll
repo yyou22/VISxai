@@ -12,7 +12,7 @@
 
   [Graphic][/Graphic]
 
-  [Step state:"introduction"]
+  [Step state:"abstract"]
 
     [CustomHeader
         title:"Panda or Gibbon? How CNNs Get Fooled by Input Noises"
@@ -26,7 +26,7 @@
     [div className:"line"][/div]
 
     [div className:"text"]
-        ## INTRODUCTION
+        ## ABSTRACT
         Though deep learning models have achieved remarkable success in diverse domains (e.g., faicial recognition, autonomous driving),
         these models have been proven to be quite brittle to perturbations around the input data. 
         [span className:"emphasize"]Adversarial machine learning (AML)[/span] studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strength model robustness. 
@@ -49,6 +49,12 @@
       [img src:"static/images/tut1.png" className:"img_" /]
     [/figure]
     ### What is the FGSM Attack?
+  [/Step]
+
+  [Step state:"dataset"]
+    [div className:"text"]
+      ## FGSM ON CIFAR-10 DATASET
+    [/div]
   [/Step]
 
 [/Scroller]
