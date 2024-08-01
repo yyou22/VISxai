@@ -8,6 +8,7 @@ const stroke_width = 1.5;
 var x2, y2;
 
 let intervalIDs = [];  // Store interval IDs globally
+let map_ = ['#f48382', '#f8bd61', '#ece137', '#c3c580', '#82a69a', '#80b2c5', '#8088c5', '#a380c5', '#c77bab', '#AB907F'];
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -165,7 +166,7 @@ class DRComponent extends D3Component {
             s.append("path")
                 .style("fill", "#6C626F")
                 .attr('class', 'arc')
-                .attr('d', drawArc(6.6 * width / 500, k));
+                .attr('d', drawArc(6.3 * width / 500, k));
 
             // Initialize random angle and radius for each s
             s.each(function(d) {
@@ -196,13 +197,14 @@ class DRComponent extends D3Component {
                         })
                         .attr("transform", function(d) {
                             return "translate(" + width/2 + "," + width/2 + ")";
-                        });
+                        })
+                        .attr('opacity', 0);
 
 
                     d3.select('.panda_img')
                         .transition()
                         .ease(d3.easeCubicOut)
-                        .duration(1000)
+                        .duration(2000)
                         .style('opacity', 1)
                         .style('filter', 'blur(0px)');
                         /*.on('end', function() {
@@ -215,7 +217,7 @@ class DRComponent extends D3Component {
                     d3.select('.panda_img')
                         .transition()
                         .ease(d3.easeCubicOut)
-                        .duration(2000)
+                        .duration(4000)
                         .style('opacity', 0)
                         .style('filter', 'blur(50px)');              
 
@@ -227,6 +229,7 @@ class DRComponent extends D3Component {
                         .attr("transform", function(d) {
                             return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
                         })
+                        .attr('opacity', 0.5)
                         .on('end', function(d, i) {
                             if (i == s.size() - 1) {
                                 intervalIDs.push(setInterval(moveInCircles, 20));
@@ -259,19 +262,48 @@ class DRComponent extends D3Component {
                         d.radius = 0.5 + Math.random(); // Random radius between 0.5 and 1.5
                     });
 
+                    s.select('.dot')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(100)
+                        .style("fill", "#6C626F");
+                    
+                    s.select('.arc')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(100)
+                        .style("fill", "#6C626F");
+
                     //intervalIDs.push(setInterval(moveInCircles, 20));
                     break;
 
                 case 'dataset':
                     stopAllMovements(); // Stop all current movements
-                    console.log('beginning');
 
                     s.transition()
                         .ease(d3.easeCubicOut)
                         .duration(1500)
                         .attr("transform", function(d) {
                             return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
-                        });
+                        })
+                        .attr('opacity', 1);
+                    
+                    s.select('.dot')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(1500)
+                        .style("fill", function(d) {
+                            return map_[d.target];
+                        })
+
+                    s.select('.arc')
+                        .transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(1500)
+                        .style("fill", function(d) {
+                            return map_[d.pred];
+                        })
+
                     break;
 
                 // Add other cases as needed

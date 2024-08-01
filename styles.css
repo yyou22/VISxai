@@ -38,6 +38,14 @@ img {
   filter: drop-shadow(0px 3px 2px rgba(39, 8, 42, 0.28));
 }
 
+.img_2{
+  border-radius: 10px;
+  max-width: 300px;
+  filter: drop-shadow(0px 3px 2px rgba(39, 8, 42, 0.28));
+  display: block;
+  margin: 0 auto;
+}
+
 .animal_icon {
   filter: drop-shadow(0px 3px 2px rgba(39, 8, 42, 0.5));
 }
@@ -134,7 +142,7 @@ h3 {
 }
 
 .text {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .emphasize {

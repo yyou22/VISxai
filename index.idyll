@@ -40,6 +40,9 @@
   [Step state:"beginning"]
     [div className:"text"]
       ## FROM THE VERY BEGINNING
+      Before we use visualizations to understand the impacts of adversarial attacks on CNNs (yes, those are soon-to-be data points you see floating on the right), let's first go through some basics.
+    [/div]
+    [div className:"text"]
       ### What is an Adversarial Attack?
       In 2014, Goodfellow et al. showed that an adversarial image of a [span className:"emphasize"]panda[/span] could fool GoogLeNet into classifying it as [span className:"emphasize"]gibbon[/span] with high confidence, 
       leading to the birth of AML research. 
@@ -59,9 +62,10 @@
       [img src:"static/images/tut2.png" className:"img_" /]
     [/figure]
     [figure]
-      [img src:"static/images/tut3.png" className:"img_" /]
+      [img src:"static/images/tut3.png" className:"img_2" / ]
     [/figure]
     [div className:"text"]
+      ### How did the CNN see a gibbon then?
       While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
       Let's take a look at how the FGSM attack alters CNNs' perceptions of image datasets. 
     [/div]
@@ -70,7 +74,14 @@
 
   [Step state:"dataset"]
     [div className:"text"]
-      ## FGSM ON CIFAR-10 DATASET
+      ## FGSM ON CIFAR-10
+      ### CIFAR-10 Dataset
+      On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span]. 
+      The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), 
+      with 6,000 images per class. 
+      [br/]
+      [br/]
+      Here, we use the following colors to represent these classes:
     [/div]
   [/Step]
 
