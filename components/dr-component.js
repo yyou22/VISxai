@@ -69,7 +69,7 @@ class DRComponent extends D3Component {
 
         var i_ = 0;
 
-        d3.csv('/data/resnet/000/lvl4.csv', function(d, i) {
+        /*d3.csv('/data/resnet/000/lvl4.csv', function(d, i) {
 
             if (+d.vis === 1) {
                 d.xt = +d.xpost;
@@ -98,7 +98,7 @@ class DRComponent extends D3Component {
                     .attr('pred', function(d){ return d.pred;})
                     .attr('selected', 0);
 
-        });
+        });*/
 
     }
 
