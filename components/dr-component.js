@@ -2,6 +2,11 @@ const React = require('react');
 const D3Component = require('idyll-d3-component');
 const d3 = require('d3');
 
+var k = 1.0;
+const stroke_color = "#554F5D";
+const stroke_width = 0.5;
+const highlight_stroke_width = 0.7;
+
 export function grid(g, x, y) {
     g.attr("stroke", "#d6cad9")
         .call(g => {
@@ -34,6 +39,10 @@ export function grid(g, x, y) {
     return g;
 }
 
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
+
 
 class DRComponent extends D3Component {
 
@@ -56,12 +65,6 @@ class DRComponent extends D3Component {
             .style('height', 'auto')
             .style('overflow', 'visible')
             .style('cursor', 'crosshair')
-        
-        canvas.append('svg').attr('class', 'grid_container');
-        canvas.append('g').attr('class', 'circle_container');
-
-        const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
-        grid(gGrid, x, y);
 
         /*canvas.on('click', function() {
             console.log('clicked');
@@ -69,9 +72,9 @@ class DRComponent extends D3Component {
 
         var i_ = 0;
 
-        /*d3.csv('/data/resnet/000/lvl4.csv', function(d, i) {
+        d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
 
-            if (+d.vis === 1) {
+            if (+d.vis == 1) {
                 d.xt = +d.xpost;
                 d.yt = +d.ypost;
                 d.xp = +d.xposp;
@@ -81,9 +84,18 @@ class DRComponent extends D3Component {
                 d.idx = i_;
                 d.ogi = +d.ogi;
                 i_ += 1;
+                return d;
             }
 
         }).then(function(data) {
+
+            canvas.append('svg').attr('class', 'grid_container');
+            canvas.append('g').attr('class', 'circle_container');
+
+            const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
+            grid(gGrid, x, y);
+
+            var width = node.getBoundingClientRect().width;
 
             var s = canvas.select('.circle_container').selectAll()
                     .data(data)
@@ -92,13 +104,22 @@ class DRComponent extends D3Component {
                     .attr('class', 'circle_group')
                     .attr("id", function (d) { return "circle_group" +  d.idx; })
                     .attr("transform", function(d) {
-                        return "translate(" + getRndInteger(20, 480)  + "," + getRndInteger(20, 480)  + ")";
+                        return "translate(" + getRndInteger(20, width-20)  + "," + getRndInteger(20, width-20)  + ")";
                     })
                     .attr('target', function(d){ return d.target;})
                     .attr('pred', function(d){ return d.pred;})
                     .attr('selected', 0);
 
-        });*/
+            s.append('circle')
+                    .attr('class', 'dot')
+                    .attr('r', 7/k)
+                    .attr('stroke_', stroke_width)
+                    .attr('strokec_', stroke_color)
+                    .attr('stroke-width', stroke_width/k)
+                    .attr('stroke', stroke_color)
+                    .style("fill", "black")
+
+        });
 
     }
 
