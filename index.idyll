@@ -88,7 +88,7 @@
 
   [Step state:"dataset"]
     [div className:"text"]
-      ## FGSM ON CIFAR-10
+      ## DATASET, MODEL, & DIMENSIONALITY REDUCTION
       ### CIFAR-10 Dataset
       On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span] in the scatterplot. 
       The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), 
@@ -99,11 +99,25 @@
       We use the following colors to represent these classes:
     [/div]
     [figure]
-      [img src:"static/images/color legend.png" className:"img" / ]
+      [img src:"static/images/color legend.png" className:"img_" / ]
     [/figure]
+    [div className:"text"]
+      Each circle from the scatterplot represents an instance from the dataset, and is splitted into two halves: 
+      the color of the left half represents its [span className:"emphasize"]ground truth label[/span], while the color of the right half represents the [span className:"emphasize"]model's prediction[/span] of the image. 
+    [/div]
     [figure]
-      [img src:"static/images/circle_.png" className:"img" / ]
+      [img src:"static/images/circle_.png" className:"img_3" / ]
     [/figure]
+    [div className:"text"]
+    ### ResNet-34 Model
+    Here, we choose the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
+    ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the ResNet (Residual Networks) family, 
+    which utilizes residual learning.  
+    The architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
+    [/div]
+    [div className:"text"]
+    ### Projecting onto a 2-D Space
+    [/div]
   [/Step]
 
 [/Scroller]
