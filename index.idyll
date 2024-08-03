@@ -10,7 +10,21 @@
 //scroller
 [Scroller currentState:scrollState]
 
-  [Graphic][/Graphic]
+  [Graphic]
+    [ul className:"circles__"]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+      [li][/li]
+    [/ul]
+    [div className:"background"]
+    [/div]
+  [/Graphic]
 
   [Step state:"abstract"]
 
@@ -65,7 +79,7 @@
       [img src:"static/images/tut3.png" className:"img_2" / ]
     [/figure]
     [div className:"text"]
-      ### How did the CNN see a gibbon then?
+      ### How does the CNN see a gibbon then?
       While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
       Let's take a look at how the FGSM attack alters CNNs' perceptions of image datasets. 
     [/div]
@@ -76,13 +90,20 @@
     [div className:"text"]
       ## FGSM ON CIFAR-10
       ### CIFAR-10 Dataset
-      On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span]. 
+      On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span] in the scatterplot. 
       The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), 
       with 6,000 images per class. 
+      Here, we randomly sampled 10 images from each class. 
       [br/]
       [br/]
-      Here, we use the following colors to represent these classes:
+      We use the following colors to represent these classes:
     [/div]
+    [figure]
+      [img src:"static/images/color legend.png" className:"img" / ]
+    [/figure]
+    [figure]
+      [img src:"static/images/circle_.png" className:"img" / ]
+    [/figure]
   [/Step]
 
 [/Scroller]

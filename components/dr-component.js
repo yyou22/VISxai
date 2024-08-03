@@ -291,7 +291,7 @@ class DRComponent extends D3Component {
                     s.select('.dot')
                         .transition()
                         .ease(d3.easeCubicOut)
-                        .duration(1500)
+                        .duration(500)
                         .style("fill", function(d) {
                             return map_[d.target];
                         })
@@ -299,7 +299,7 @@ class DRComponent extends D3Component {
                     s.select('.arc')
                         .transition()
                         .ease(d3.easeCubicOut)
-                        .duration(1500)
+                        .duration(500)
                         .style("fill", function(d) {
                             return map_[d.pred];
                         })
