@@ -88,7 +88,7 @@
 
   [Step state:"dataset"]
     [div className:"text"]
-      ## DATASET, MODEL, & DIMENSIONALITY REDUCTION
+      ## DATASET & MODEL
       ### CIFAR-10 Dataset
       On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span] in the scatterplot. 
       The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), 
@@ -123,18 +123,19 @@
       To extract ResNet-34's perception of the images, 
       we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
     [/div]
+  [/Step]
+
+  [Step state:"data points"]
     [div className:"text"]
+      ## INTERACTING WITH DATA POINTS
       ### Projecting onto a 2-D Space
       To unveil important patterns in the embeddings and transform them into a format that can be easily visualized, 
       we apply dimensionality reduction to project the model embeddings into a lower dimension. 
-      Here, we starts by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
+      Here, we start by using [span className:"emphasize"]t-SNE (t-distributed Stochastic Neighbor Embedding)[/span]. 
       [br/]
       [br/]
-      t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving their relative distances. 
-      The method highlights clusters and relationships in the data that aren't easily seen in higher dimensions, 
-      helping us understand the patterns in ResNet-34's embeddings.
-      [br/]
-      [br/]
+      t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving the relative distances. 
+      It highlights clusters and relationships in the data that aren't easily seen in higher dimensions.
       The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right.
     [/div]
   [/Step]

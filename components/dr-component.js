@@ -15,6 +15,53 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function animateOnceWithIncreasingDelay(g) {
+    g.each(function(d, i) {
+        const element = d3.select(this);
+        const delay_ = i * 50; // Incremental delay for each element
+
+        element.select('.dot').transition()
+            .delay(delay_)
+            .duration(500)
+            .attr("r", 10.7 / k * width_ / 500)
+            .transition()
+            .duration(500)
+            .attr("r", 7 / k * width_ / 500);
+
+        element.select('.arc').transition()
+            .delay(delay_)
+            .duration(500)
+            .attr('d', drawArc(10 * width_ / 500, k))
+            .transition()
+            .duration(500)
+            .attr('d', drawArc(6.3 * width_ / 500, k));
+    });
+}
+
+export function hoverCir(g){
+
+    g.select('.dot').transition("mousehover")
+        .duration(60)
+        .attr("r", 15 / k * width_ / 500)
+
+    g.select('.arc').transition("mousehover")
+        .duration(60)
+        .attr('d', drawArc(14.3 * width_ / 500, k));
+
+}
+
+export function unhoverCir(g){
+
+    g.select('.dot').transition("mousehover")
+        .duration(60)
+        .attr("r", 7 / k * width_ / 500)
+
+    g.select('.arc').transition("mousehover")
+        .duration(60)
+        .attr('d', drawArc(6.3 * width_ / 500, k));
+
+}
+
 export function drawArc(r_, k) {
     var drawArc = d3.arc()
                     .innerRadius(0)
@@ -24,38 +71,62 @@ export function drawArc(r_, k) {
     return drawArc;
 }
 
-let initialDelay = true;
-
 function RadiusChange(g) {
-    g.each(function() {
-        const delay_ = initialDelay ? Math.random() * 6000 : 0; // Generate a random delay up to 6000ms only for the initial animation
+    g.each(function(d) {
+        const element = d3.select(this);
+        if (!d.initialDelay) {
+            d.initialDelay = Math.random() * 15000; // Initial random delay
+        }
+        const delay_ = d.initialDelay;
 
-        d3.select(this).select('.dot').transition()
+        element.select('.dot').transition()
             .delay(delay_)
             .duration(3000)
             .attr("r", 10.7 / k * width_ / 500)
             .transition()
             .duration(3000)
-            .attr("r", 7 / k * width_ / 500);
+            .attr("r", 7 / k * width_ / 500)
+            .on('end', function() {
+                loopRadiusChange(element);
+            });
 
-        d3.select(this).select('.arc').transition()
+        element.select('.arc').transition()
             .delay(delay_)
             .duration(3000)
             .attr('d', drawArc(10 * width_ / 500, k))
             .transition()
             .duration(3000)
-            .attr('d', drawArc(6.3 * width_ / 500, k));
+            .attr('d', drawArc(6.3 * width_ / 500, k))
+            .on('end', function() {
+                loopRadiusChange(element);
+            });
     });
 }
 
-// Function to loop the animation
-function loopAnimation() {
-    RadiusChange(d3.selectAll('.circle_group')); // Initial call with delay
-    initialDelay = false; // Disable the delay for subsequent loops
+function loopRadiusChange(element) {
+    element.select('.dot').transition()
+        .duration(3000)
+        .attr("r", 10.7 / k * width_ / 500)
+        .transition()
+        .duration(3000)
+        .attr("r", 7 / k * width_ / 500)
+        .on('end', function() {
+            loopRadiusChange(element);
+        });
 
-    d3.interval(function() {
-        RadiusChange(d3.selectAll('.circle_group'));
-    }, 6000);  // Adjust the interval time as needed
+    element.select('.arc').transition()
+        .duration(3000)
+        .attr('d', drawArc(10 * width_ / 500, k))
+        .transition()
+        .duration(3000)
+        .attr('d', drawArc(6.3 * width_ / 500, k))
+        .on('end', function() {
+            loopRadiusChange(element);
+        });
+}
+
+function stopAnimation() {
+    d3.selectAll('.circle_group').selectAll('.dot, .arc').interrupt();
 }
 
 // Function to clear all intervals when needed
@@ -225,6 +296,7 @@ class DRComponent extends D3Component {
                 case 'abstract':
 
                     stopAllMovements();
+                    stopAnimation();
 
                     s.transition()
                         .ease(d3.easeBackIn)
@@ -243,9 +315,6 @@ class DRComponent extends D3Component {
                         .duration(2000)
                         .style('opacity', 1)
                         .style('filter', 'blur(0px)');
-                        /*.on('end', function() {
-                            stopAllMovements();
-                        });*/
 
                     break;
                 case 'beginning':
@@ -269,7 +338,7 @@ class DRComponent extends D3Component {
                         .on('end', function(d, i) {
                             if (i == s.size() - 1) {
                                 intervalIDs.push(setInterval(moveInCircles, 20));
-                                loopAnimation();
+                                RadiusChange(d3.selectAll('.circle_group'));
                             }
                         });
 
@@ -315,7 +384,17 @@ class DRComponent extends D3Component {
                     break;
 
                 case 'dataset':
+                    
                     stopAllMovements(); // Stop all current movements
+                    stopAnimation();
+
+                    canvas.selectAll('.circle_group')
+                        .on("mouseover", function(d, i) {
+                            hoverCir(d3.select(this));
+                        })
+                        .on("mouseout", function(d, i) {
+                            unhoverCir(d3.select(this));
+                        })
 
                     s.transition()
                         .ease(d3.easeCubicOut)
@@ -332,6 +411,7 @@ class DRComponent extends D3Component {
                         .style("fill", function(d) {
                             return map_[d.target];
                         })
+                        .attr('r', 7 / k * width / 500);
 
                     s.select('.arc')
                         .transition()
@@ -340,10 +420,14 @@ class DRComponent extends D3Component {
                         .style("fill", function(d) {
                             return map_[d.pred];
                         })
+                        .attr('d', drawArc(6.3 * width / 500, k));
 
                     break;
 
-                // Add other cases as needed
+                case "data points":
+
+                    animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+
             }
         }
     }
