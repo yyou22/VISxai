@@ -9,6 +9,7 @@ var x2, y2;
 
 let intervalIDs = [];  // Store interval IDs globally
 let map_ = ['#f48382', '#f8bd61', '#ece137', '#c3c580', '#82a69a', '#80b2c5', '#8088c5', '#a380c5', '#c77bab', '#AB907F'];
+let width_;
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -21,6 +22,40 @@ export function drawArc(r_, k) {
                     .startAngle(0.5)
                     .endAngle(0.5 + Math.PI);
     return drawArc;
+}
+
+let initialDelay = true;
+
+function RadiusChange(g) {
+    g.each(function() {
+        const delay_ = initialDelay ? Math.random() * 6000 : 0; // Generate a random delay up to 6000ms only for the initial animation
+
+        d3.select(this).select('.dot').transition()
+            .delay(delay_)
+            .duration(3000)
+            .attr("r", 10.7 / k * width_ / 500)
+            .transition()
+            .duration(3000)
+            .attr("r", 7 / k * width_ / 500);
+
+        d3.select(this).select('.arc').transition()
+            .delay(delay_)
+            .duration(3000)
+            .attr('d', drawArc(10 * width_ / 500, k))
+            .transition()
+            .duration(3000)
+            .attr('d', drawArc(6.3 * width_ / 500, k));
+    });
+}
+
+// Function to loop the animation
+function loopAnimation() {
+    RadiusChange(d3.selectAll('.circle_group')); // Initial call with delay
+    initialDelay = false; // Disable the delay for subsequent loops
+
+    d3.interval(function() {
+        RadiusChange(d3.selectAll('.circle_group'));
+    }, 6000);  // Adjust the interval time as needed
 }
 
 // Function to clear all intervals when needed
@@ -136,6 +171,7 @@ class DRComponent extends D3Component {
             grid(gGrid, x, y, node);
 
             var width = node.getBoundingClientRect().width;
+            width_ = width;
 
             var s = canvas.select('.circle_container').selectAll()
                 .data(data)
@@ -233,6 +269,7 @@ class DRComponent extends D3Component {
                         .on('end', function(d, i) {
                             if (i == s.size() - 1) {
                                 intervalIDs.push(setInterval(moveInCircles, 20));
+                                loopAnimation();
                             }
                         });
 

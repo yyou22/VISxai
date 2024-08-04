@@ -109,14 +109,33 @@
       [img src:"static/images/circle_.png" className:"img_3" / ]
     [/figure]
     [div className:"text"]
-    ### ResNet-34 Model
-    Here, we choose the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
-    ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the ResNet (Residual Networks) family, 
-    which utilizes residual learning.  
-    The architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
+      ### ResNet-34 Model
+      Here, we use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
+      [br/]
+      [br/]
+      ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
+      which utilizes [span className:"emphasize"]residual learning[/span]. 
+      Residual learning helps the network to learn residual functions with reference to the layer inputs, 
+      which addresses the vanishing gradient problem and allows the training of much deeper networks.
+      This architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
+      [br/]
+      [br/]
+      To extract ResNet-34's perception of the images, 
+      we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
     [/div]
     [div className:"text"]
-    ### Projecting onto a 2-D Space
+      ### Projecting onto a 2-D Space
+      To unveil important patterns in the embeddings and transform them into a format that can be easily visualized, 
+      we apply dimensionality reduction to project the model embeddings into a lower dimension. 
+      Here, we starts by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
+      [br/]
+      [br/]
+      t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving their relative distances. 
+      The method highlights clusters and relationships in the data that aren't easily seen in higher dimensions, 
+      helping us understand the patterns in ResNet-34's embeddings.
+      [br/]
+      [br/]
+      The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right.
     [/div]
   [/Step]
 
