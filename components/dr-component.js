@@ -325,10 +325,10 @@ class DRComponent extends D3Component {
             window.scrollTo(0, 0);
         }*/
 
-        window.addEventListener('click' , (e) => {
+        /*window.addEventListener('click' , (e) => {
             const target = e.target//.className; 
             console.log(target);
-        })
+        })*/
 
         var x = d3.scaleLinear()
             .domain([0, 1.0])

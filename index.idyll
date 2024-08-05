@@ -47,7 +47,7 @@
         Specifically for image classification,it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that not human-interpretable, 
         as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
         This guide will utilize interative visualizations to provide a non-expert introduction into adversarial attacks, 
-        and provide comparisons of two popular attacks on different CNNs. 
+        and provide comparisons of two popular attacks on CNNs. 
     [/div]
   [/Step]
 
@@ -110,7 +110,7 @@
     [/figure]
     [div className:"text"]
       ### ResNet-34 Model
-      Here, we use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
+      For this article, we will use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
       [br/]
       [br/]
       ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
@@ -152,7 +152,7 @@
       we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot. 
       [br/]
       [br/]
-      The hexbin map shows the global distribution of the entire dataset, 
+      The hexbin map shows the [span className:"emphasize"]global distribution[/span] of the entire dataset, 
       even when only a subset of the dataset is displayed. 
       Each hexagon is colored according to the model's predicted class, 
       and the size of the hexagon represents the frequency of instances being predicted as that class in that region. 
@@ -160,24 +160,50 @@
       allowing quick identification of decision boundaries and similarly classified image groups. 
     [/div]
 
+    [div className:"text"]
+      ### Exploring the Embedding Distribution
+      [span className:"emphasize2"]
+      With the help of the hexbin backdrop, take a look at the spatiality of ResNet-34's embeddings projected by t-SNE. 
+      What can you learn about ResNet-34's perceptions of the natural CIFAR-10 dataset? 
+      [br/]
+      [/span]
+    [/div]
+
     [var name:"showInsights" value:false /]
 
     [conditional if:`!showInsights`]
       [button onClick:`showInsights = true;`]
-        Show technical details
+        Show potential insights
       [/button]
     [/conditional]
 
     [conditional if:`showInsights`]
 
-      Test.
+      [div className:"panel"]
+        From the projection, we can see that the CIFAR-10 embeddings of ResNet-34 form [span className:"emphasize"]small, distinct class clusters[/span].
+        When no attack has been conducted,
+        most of the confusion seems to happen within the center of the projection,
+        near the "boundaries" of the distinct clusters.
+        Overall, ResNet-34 achieves high accuracy. 
+        [br/]
+        [br/]
+        However, something that may catch your attention is that, 
+        although a closer distance between instances generally means that the model perceives them as "more similar," 
+        we can see that there are classes that we don't deem similar at all close to each other, e.g., birds and automobiles.
 
-      [button onClick:`showInsights = false;`]
-        Hide technical details
-      [/button]
+        [button onClick:`showInsights = false;`]
+          Hide potential insights
+        [/button]
+
+      [/div]
 
     [/conditional]
+  [/Step]
 
+  [Step state:"slider"]
+    [div className:"text"]
+      ## CONDUCTING THE FGSM ATTACK
+    [/div]
   [/Step]
 
 [/Scroller]
