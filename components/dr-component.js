@@ -1,17 +1,129 @@
 const React = require('react');
 const D3Component = require('idyll-d3-component');
 const d3 = require('d3');
+import * as d3HB from "d3-hexbin";
 
 var k = 1.0;
 const stroke_color = "#554F5D";
 const stroke_width = 1.5;
-var x2, y2;
+var x1, y1, x2, y2;
 
 let intervalIDs = [];  // Store interval IDs globally
 let map_ = ['#f48382', '#f8bd61', '#ece137', '#c3c580', '#82a69a', '#80b2c5', '#8088c5', '#a380c5', '#c77bab', '#AB907F'];
 let label_ = ['Airplane', 'Automobile', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
 let width_;
 let container, canvas;
+let cur_perturb = 0;
+
+const perturb_files = ['000', '001', '002', '003'];
+let max_radius;
+
+export function InitiCanHexbin(cur_perturb) {
+
+    max_radius = 10 * width_ / 500;
+
+    for (let i = 0; i < 4; i++) {
+
+        var filename = '/static/data/resnet/' + perturb_files[i] + '/lvl4.csv'
+    
+        d3.csv(filename, function(d) {
+    
+          d.x = +d.xpost
+          d.y = +d.ypost
+          d.pred = +d.pred
+          return d;
+    
+        }).then(function(data) {
+    
+            initiateHexbin(data, i, cur_perturb);
+    
+        })
+    }
+
+}
+
+function initiateHexbin(data, i, cur_perturb=0) {
+
+    x1 = d3.scaleLinear()
+            .domain([0, 1.0])
+            .range([0, 500])
+    y1 = d3.scaleLinear()
+        .domain([0, 1.0])
+        .range([0, 500])
+
+    var inputForHexbinFun = []
+    data.forEach(function(d) {
+        var p = [x2(d.x), y2(d.y)]
+        p.pred = d.pred;
+        inputForHexbinFun.push(p)
+    })
+
+    var hexbin = d3HB.hexbin()
+            .radius(max_radius)
+            .extent([[0, 0], [500, 500]])
+
+    var hex_data = hexbin(inputForHexbinFun)
+        .map( d => ((d.pred = find_frequent(d)), d))
+
+    let contour_container = canvas.select('.hexbin_container').append('g').attr('class', 'contour_container');
+
+    var bin_container = contour_container.append("g").attr('class', 'cur_contour').attr('id', 'cur_contour' + String(i));
+
+    bin_container.style("opacity", 0);
+
+    // Plot the hexbins
+    bin_container.append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width_)
+        .attr("height", width_)
+
+    bin_container.append("g")
+        .attr("clip-path", "url(#clip)")
+        .selectAll("path")
+        .data( hex_data )
+        .enter().append("path")
+        .attr("r", function(d) {
+            return d.pred;
+        })
+        .attr("d", function(d) {
+            return hexbin.hexagon(radius(d.length));
+        })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        //.attr("fill", function(d) { return color(d.length); })
+        .attr("fill", function(d) { return map_[d.pred];})
+        .attr("stroke", "black")
+        .attr("stroke-width", "0.1")
+        .attr("opacity", 0.4)
+        //.attr("opacity", function(d) { return op(d.length); })
+}
+
+function radius(val) {
+    if (val > max_radius) {
+        return max_radius;
+    }
+    return val;
+}
+
+function find_frequent(d) {
+    
+    var count = {}
+
+    d.forEach(function(d) {
+
+        if (!count[d.pred]) {
+            count[d.pred] = 1;
+        }
+        else {
+            count[d.pred]++;
+        }
+
+    })
+
+    const result = Object.entries(count).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+
+    return result;
+}
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -288,14 +400,18 @@ class DRComponent extends D3Component {
                 return d;
             }
         }).then(function(data) {
-            canvas.append('svg').attr('class', 'grid_container');
-            canvas.append('g').attr('class', 'circle_container');
-
-            const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
-            grid(gGrid, x, y, node);
 
             var width = node.getBoundingClientRect().width;
             width_ = width;
+
+            canvas.append('svg').attr('class', 'grid_container');
+            canvas.append('g').attr('class', 'hexbin_container');
+            canvas.append('g').attr('class', 'circle_container');
+
+            InitiCanHexbin('000');
+
+            const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
+            grid(gGrid, x, y, node);
 
             var s = canvas.select('.circle_container').selectAll()
                 .data(data)
@@ -488,12 +604,22 @@ class DRComponent extends D3Component {
                         })
                         .attr('d', drawArc(6.3 * width / 500, k));
 
+                    canvas.select('#cur_contour0')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0);
+
                     break;
 
                 case "data points":
 
                     stopAllMovements();
                     stopAnimation();
+
+                    canvas.select('#cur_contour0')
+                        .transition()
+                        .duration(1500)
+                        .style('opacity', 1);
 
                     s.transition()
                         .ease(d3.easeCubicOut)
@@ -504,7 +630,6 @@ class DRComponent extends D3Component {
                         .on('end', function() {
                             animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
                         })
-
 
             }
         }

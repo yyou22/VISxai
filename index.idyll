@@ -125,7 +125,9 @@
     [/div]
     [div className:"text"]
       ### Exploring the data points
-      [span className:"emphasize2"]Start exploring the data points by hovering over them and observe their ground truth labels and ResNet-34's predictions of them.[/span]
+      [span className:"emphasize2"]
+      Start exploring the data points by hovering over them and observe their ground truth labels and ResNet-34's predictions of them.
+      [/span]
     [/div]
   [/Step]
 

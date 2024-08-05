@@ -8,7 +8,8 @@
     "css": "styles.css"
   },
   "dependencies": {
-    "d3": "^5.7.0",
+    "d3": "^5.16.0",
+    "d3-hexbin": "^0.2.2",
     "idyll": "^3.0.0",
     "idyll-d3-component": "^2.0.0"
   },
