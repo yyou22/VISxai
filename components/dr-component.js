@@ -402,7 +402,7 @@ class DRComponent extends D3Component {
             width_ = width;
 
             canvas.append('svg').attr('class', 'grid_container');
-            canvas.append('g').attr('class', 'hexbin_container');
+            canvas.append('g').attr('class', 'hexbin_container').attr('visibility', 'hidden');
             canvas.append('g').attr('class', 'circle_container');
 
             InitiCanHexbin('000');
@@ -602,7 +602,7 @@ class DRComponent extends D3Component {
                             if (d3.select('.cursor').style('visibility') !== 'hidden') {
                                 d3.select('.cursor')
                                     .transition()
-                                    .duration(1000)
+                                    .duration(500)
                                     .style('opacity', 0)
                                     .on('end', function() {
                                         d3.select('.cursor')
@@ -655,6 +655,9 @@ class DRComponent extends D3Component {
                             return map_[d.pred];
                         })
                         .attr('d', drawArc(6.3 * width / 500, k));
+
+
+                    d3.select('.hexbin_container').attr('visibility', 'visible');
 
                     canvas.select('#cur_contour0')
                         .transition()

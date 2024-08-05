@@ -189,7 +189,7 @@
         [br/]
         However, something that may catch your attention is that, 
         although a closer distance between instances generally means that the model perceives them as "more similar," 
-        we can see that there are classes that we don't deem similar at all close to each other, e.g., birds and automobiles.
+        we can see that [span className:"emphasize"]there are classes that we don't deem similar at all close to each other[/span], e.g., birds and automobiles.
 
         [button onClick:`showInsights = false;`]
           Hide potential insights
@@ -202,7 +202,13 @@
 
   [Step state:"slider"]
     [div className:"text"]
-      ## CONDUCTING THE FGSM ATTACK
+      ## CONDUCTING THE ATTACK - FGSM
+      ### Applying Perturbations
+      Previously, we introduced the FGSM attack, which generate [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
+      In this context, perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions. 
+      [br/]
+      [br/]
+      Now, we will apply these perturbations to our data points to observe their effects. 
     [/div]
   [/Step]
 
