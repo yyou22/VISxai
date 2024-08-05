@@ -238,6 +238,19 @@ class DRComponent extends D3Component {
                         .style("font-family", "Courier")
                         .style("font-size", "15px")
                         .style("pointer-events", "none"); 
+
+            // Append the image to the container
+            container.append('img')
+                .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+                .style('position', 'fixed')
+                .style('bottom', '0')
+                .style('right', '0')
+                .style('width', 'auto')
+                .style('height', 'auto')
+                .style('max-width', '100px') // Adjust the size as needed
+                .style('max-height', '100px') // Adjust the size as needed
+                .style('z-index', '1000')
+                .style('pointer-events', 'none');
             
             canvas.attr('viewBox', `0 0 ${this.width} ${this.height}`)
                 .style('width', '100%')
@@ -480,6 +493,7 @@ class DRComponent extends D3Component {
                 case "data points":
 
                     stopAllMovements();
+                    stopAnimation();
 
                     s.transition()
                         .ease(d3.easeCubicOut)
