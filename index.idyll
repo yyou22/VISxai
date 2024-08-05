@@ -126,7 +126,7 @@
     [div className:"text"]
       ### Exploring the data points
       [span className:"emphasize2"]
-      Start exploring the data points by hovering over them and observe their ground truth labels and ResNet-34's predictions of them.
+      Start exploring the data points by hovering over them and observing their ground truth labels and ResNet-34's predictions of them.
       [/span]
     [/div]
   [/Step]
@@ -137,7 +137,7 @@
       ### Projecting onto a 2-D Space
       To reveal important patterns in the embeddings and transform them into a format that can be easily visualized, 
       we apply [span className:"emphasize"]dimensionality reduction[/span] to project the model embeddings into a lower dimension. 
-      Here, we start by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
+      We start by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
       [br/]
       [br/]
       t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving the relative distances. 
@@ -159,6 +159,25 @@
       This way, the map shows the general trends in clustering based on model predictions, 
       allowing quick identification of decision boundaries and similarly classified image groups. 
     [/div]
+
+    [var name:"showInsights" value:false /]
+
+    [conditional if:`!showInsights`]
+      [button onClick:`showInsights = true;`]
+        Show technical details
+      [/button]
+    [/conditional]
+
+    [conditional if:`showInsights`]
+
+      Test.
+
+      [button onClick:`showInsights = false;`]
+        Hide technical details
+      [/button]
+
+    [/conditional]
+
   [/Step]
 
 [/Scroller]

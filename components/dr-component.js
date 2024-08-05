@@ -325,6 +325,11 @@ class DRComponent extends D3Component {
             window.scrollTo(0, 0);
         }*/
 
+        window.addEventListener('click' , (e) => {
+            const target = e.target//.className; 
+            console.log(target);
+        })
+
         var x = d3.scaleLinear()
             .domain([0, 1.0])
             .range([0, this.width])
@@ -354,15 +359,7 @@ class DRComponent extends D3Component {
             // Append the image to the container
             container.append('img')
                 .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
-                .style('position', 'fixed')
-                .style('bottom', '0')
-                .style('right', '0')
-                .style('width', 'auto')
-                .style('height', 'auto')
-                .style('max-width', '100px') // Adjust the size as needed
-                .style('max-height', '100px') // Adjust the size as needed
-                .style('z-index', '1000')
-                .style('pointer-events', 'none');
+                .attr('class', 'img_thumbnail');
             
             canvas.attr('viewBox', `0 0 ${this.width} ${this.height}`)
                 .style('width', '100%')
@@ -572,6 +569,12 @@ class DRComponent extends D3Component {
                         .on("mouseover", function(d, i) {
                             hoverCir(d3.select(this));
                             textbox(d, i);
+
+                            d3.select('.img_thumbnail')
+                                .interrupt()
+                                .style('visibility', 'visible')
+                                .style('opacity', 1)
+                                .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/" + d.ogi + "/img.png")
                         })
                         .on("mousemove", function(d, i) {
                             textbox(d, i);
@@ -579,6 +582,15 @@ class DRComponent extends D3Component {
                         .on("mouseout", function(d, i) {
                             unhoverCir(d3.select(this));
                             remove_textbox();
+                            d3.select('.img_thumbnail')
+                                .transition()
+                                .delay(500)
+                                .duration(1000)
+                                .style('opacity', 0)
+                                .on('end', function() {
+                                    d3.select(this)
+                                    .style('visibility', 'hidden')
+                                })
                         })
 
                     s.transition('opacity_change')
