@@ -407,6 +407,28 @@ class DRComponent extends D3Component {
 
             InitiCanHexbin('000');
 
+
+            //the cursor
+            const img = canvas.append('image')
+                .attr('class', 'cursor')
+                .attr('xlink:href', 'static/images/cursor.png')
+                .attr('width', 100) // Adjust the size as needed
+                .attr('height', 100); // Adjust the size as needed
+
+            const radius = 20; // Radius of the circular motion
+            let angle = 0; // Initial angle
+
+            function moveInCircles_() {
+                angle += 0.03; // Slower speed of the circular movement
+                const x = width_ - radius + radius * Math.cos(angle) - 120; // Adjusted for bottom right
+                const y = width_ - radius + radius * Math.sin(angle) - 120; // Adjusted for bottom right
+                img.attr('x', x).attr('y', y);
+                requestAnimationFrame(moveInCircles_);
+            }
+
+            moveInCircles_();
+
+
             const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
             grid(gGrid, x, y, node);
 
