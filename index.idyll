@@ -146,6 +146,16 @@
     [/div]
     [div className:"text"]
       ### Visualizing the Rest of the Dataset
+      To further visualize the global distribution of ResNet-34's CIFAR-10 image embeddings, 
+      we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot. 
+      [br/]
+      [br/]
+      The hexbin map shows the global distribution of the entire dataset, 
+      even when only a subset of the dataset is displayed. 
+      Each hexagon is colored according to the model's predicted class, 
+      and the size of the hexagon represents the frequency of instances being predicted as that class in that region. 
+      This way, the map shows the general trends in clustering based on model predictions, 
+      allowing quick identification of decision boundaries and similarly classified image groups. 
     [/div]
   [/Step]
 
