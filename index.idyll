@@ -1,5 +1,7 @@
 [meta title:"Intro to Adversarial Attacks" description:"A Beginner's Introduction to Adversarial Attacks" /]
 
+[var name:"perturbation_val" value:0 /]
+
 [var name:"scrollState" value:"loading" /]
 [Fixed]
   [DRComponent
@@ -70,17 +72,30 @@
       The panda attack you just saw is called the [span className:"emphasize"]Fast Gradient Sign Method (FGSM)[/span] attack, 
       one of the first and most known adversarial attacks. 
       It is a [span className:"emphasize"]white-box attack[/span] (i.e., the attacker has access to model internals) that adjusts the input image by taking a step towards the sign of the backpropagated gradients. 
-      The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss. 
     [/div]
-    [figure]
+      [figure]
       [img src:"static/images/tut2.png" className:"img_" /]
-    [/figure]
+      [/figure]
+    [div className:"text"]
+      The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss:
+      [br/]
+      [br/]
+      [Equation]
+      \mathbf{x}' = \mathbf{x} +\epsilon \textrm{\textrm{sign}}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y)). 
+      [/Equation]
+      [br/]
+      [br/]
+      Here, it modifies image [Equation]\mathbf{x}[/Equation] by maximizing the loss [Equation]J(\theta, \mathbf{x}, y)[/Equation] towards the gradients' sign to produce the adversarial image [Equation]\mathbf{x}[/Equation]$, 
+      where [Equation]y[/Equation] is the true label, [Equation]\theta[/Equation] is model parameters, and [Equation]\epsilon[/Equation] scales the perturbation. 
+    [/div]
     [figure]
       [img src:"static/images/tut3.png" className:"img_2" / ]
     [/figure]
     [div className:"text"]
       ### How does the CNN see a gibbon then?
       While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
+      [br/]
+      [br/]
       Let's take a look at how the FGSM attack alters CNNs' perceptions of image datasets. 
     [/div]
 
@@ -110,7 +125,7 @@
     [/figure]
     [div className:"text"]
       ### ResNet-34 Model
-      For this article, we will use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
+      For this article, we will first use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
       [br/]
       [br/]
       ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
@@ -201,14 +216,47 @@
   [/Step]
 
   [Step state:"slider"]
+
     [div className:"text"]
       ## CONDUCTING THE ATTACK - FGSM
       ### Applying Perturbations
       Previously, we introduced the FGSM attack, which generate [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
-      In this context, perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions. 
+      In this context, perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions.  
       [br/]
       [br/]
-      Now, we will apply these perturbations to our data points to observe their effects. 
+      Now, we will apply these perturbations to our data points to observe their effects.
+    [/div]
+
+    [div className:"slider_container" style:`{display: 'flex', flexAlign: 'row', textAlign: 'center'}`]
+
+      [div className:"slider_" style:`{margin: '0 auto'}`]
+        None
+        [Range value:perturbation_val min:0 max:0.03 step:0.01 /]
+        0.03
+        [br/]
+        Perturbation Size (ε): [Display value:perturbation_val /]
+      [/div]
+
+    [/div]
+
+    [div className:"text"]
+      ### FGSM with L-infinity
+      Here, we utilize FGSM attack with [Equation]L^{\infty}[/Equation] norm to generate adversarial examples. 
+      [br/]
+      [br/]
+      Also known as the Chebyshev distance, the [Equation]L^{\infty}[/Equation] distance is commonly adapted by adversarial attacks to generate perturbed images by measuring the maximum pixel difference between two images. 
+      For example, 
+      if [Equation]\mathbf{x}[/Equation] is the original image input, 
+      and [Equation]\mathbf{x}' = \mathbf{x} + \mathbf{n}[/Equation] is the adversarial output where [Equation]\mathbf{n}[/Equation] is equivalent to [Equation]\epsilon \cdot \text{sign}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y))[/Equation], 
+      then the [Equation]L^{\infty}[/Equation] distance between [Equation]\mathbf{x}[/Equation] and [Equation]\mathbf{x}'[/Equation] is computed as the following:
+
+      [Equation]
+      ||\mathbf{n}||_{\infty} = \max_{i} |n_i|.
+      [/Equation]
+
+      [br/]
+      Use the slider to adjust [Equation]\epsilon[/Equation] and observe the changes of ResNet-34's embeddings. 
+
     [/div]
   [/Step]
 

@@ -602,7 +602,7 @@ class DRComponent extends D3Component {
                             if (d3.select('.cursor').style('visibility') !== 'hidden') {
                                 d3.select('.cursor')
                                     .transition()
-                                    .duration(500)
+                                    .duration(1000)
                                     .style('opacity', 0)
                                     .on('end', function() {
                                         d3.select('.cursor')

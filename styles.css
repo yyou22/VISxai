@@ -41,7 +41,7 @@ img {
 .img_2 {
   border-radius: 10px;
   width: 100%;
-  max-width: 300px;
+  max-width: 280px;
   filter: drop-shadow(0px 3px 2px rgba(39, 8, 42, 0.28));
   display: block;
   margin: 0 auto;
@@ -338,6 +338,33 @@ button {
 
 .cursor {
   image-rendering: pixelated;
+}
+
+.katex {
+  color: #7d4282;
+}
+
+input {
+  -webkit-appearance: none;
+  height: 10px;
+  width: 160px;
+  border-radius: 10px;
+  background: #7f609a;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  border: solid 1px #3e393e;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #52a095;
+  cursor: pointer;
+  border: solid 1px #3e393e;
 }
 
 /* Decrease the margin depending on window size for steps */
