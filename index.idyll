@@ -123,20 +123,29 @@
       To extract ResNet-34's perception of the images, 
       we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
     [/div]
+    [div className:"text"]
+      ### Exploring the data points
+      [span className:"emphasize2"]Start exploring the data points by hovering over them and observe their ground truth labels and ResNet-34's predictions of them.[/span]
+    [/div]
   [/Step]
 
   [Step state:"data points"]
     [div className:"text"]
       ## INTERACTING WITH DATA POINTS
       ### Projecting onto a 2-D Space
-      To unveil important patterns in the embeddings and transform them into a format that can be easily visualized, 
-      we apply dimensionality reduction to project the model embeddings into a lower dimension. 
-      Here, we start by using [span className:"emphasize"]t-SNE (t-distributed Stochastic Neighbor Embedding)[/span]. 
+      To reveal important patterns in the embeddings and transform them into a format that can be easily visualized, 
+      we apply [span className:"emphasize"]dimensionality reduction[/span] to project the model embeddings into a lower dimension. 
+      Here, we start by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
       [br/]
       [br/]
       t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving the relative distances. 
       It highlights clusters and relationships in the data that aren't easily seen in higher dimensions.
-      The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right.
+      [br/]
+      [br/]
+      The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right. 
+    [/div]
+    [div className:"text"]
+      ### Visualizing the Rest of the Dataset
     [/div]
   [/Step]
 

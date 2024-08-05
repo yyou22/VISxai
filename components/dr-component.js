@@ -9,7 +9,9 @@ var x2, y2;
 
 let intervalIDs = [];  // Store interval IDs globally
 let map_ = ['#f48382', '#f8bd61', '#ece137', '#c3c580', '#82a69a', '#80b2c5', '#8088c5', '#a380c5', '#c77bab', '#AB907F'];
+let label_ = ['Airplane', 'Automobile', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
 let width_;
+let container, canvas;
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -17,24 +19,26 @@ function getRndInteger(min, max) {
 
 function animateOnceWithIncreasingDelay(g) {
     g.each(function(d, i) {
-        const element = d3.select(this);
-        const delay_ = i * 50; // Incremental delay for each element
+        if (i % 3 === 0) {  // Apply animation only to every third element
+            const element = d3.select(this);
+            const delay_ = (i/3) * 50; // Incremental delay for each element
 
-        element.select('.dot').transition()
-            .delay(delay_)
-            .duration(500)
-            .attr("r", 10.7 / k * width_ / 500)
-            .transition()
-            .duration(500)
-            .attr("r", 7 / k * width_ / 500);
+            element.select('.dot').transition()
+                .delay(delay_)
+                .duration(500)
+                .attr("r", 10.7 / k * width_ / 500)
+                .transition()
+                .duration(500)
+                .attr("r", 7 / k * width_ / 500);
 
-        element.select('.arc').transition()
-            .delay(delay_)
-            .duration(500)
-            .attr('d', drawArc(10 * width_ / 500, k))
-            .transition()
-            .duration(500)
-            .attr('d', drawArc(6.3 * width_ / 500, k));
+            element.select('.arc').transition()
+                .delay(delay_)
+                .duration(500)
+                .attr('d', drawArc(10 * width_ / 500, k))
+                .transition()
+                .duration(500)
+                .attr('d', drawArc(6.3 * width_ / 500, k));
+        }
     });
 }
 
@@ -135,6 +139,27 @@ function stopAllMovements() {
     intervalIDs = [];  // Clear the interval IDs array
 }
 
+let tooltip;
+
+export function textbox(d, i){
+
+    const tooltipNode = tooltip.node();
+    const tooltipRect = tooltipNode.getBoundingClientRect();
+    const tooltipWidth = tooltipRect.width;
+    const tooltipHeight = tooltipRect.height;
+
+    tooltip.html("Instance #" + String(i) + " <br>Label: " + label_[d.target] + " <br>Pred.: " + label_[d.pred] + " ")
+            .style("left", (d3.mouse(container.node())[0] - tooltipWidth/2  + "px"))
+            .style("top", (d3.mouse(container.node())[1] - tooltipHeight - 20 + "px"))
+            .style("opacity", 1)
+
+}
+
+export function remove_textbox(){
+    tooltip.style("opacity", 0);
+}
+
+
 export function grid(g, x, y, node) {
     var width = node.getBoundingClientRect().width;
     g.attr("stroke", "#d6cad9")
@@ -195,9 +220,24 @@ class DRComponent extends D3Component {
             .domain([0, 1.0])
             .range([0, this.height])
 
-            const container = d3.select(node).style('position', 'relative');
+            container = d3.select(node).style('position', 'relative');
 
-            const canvas = container.append('svg').attr('class', 'canvas');
+            canvas = container.append('svg').attr('class', 'canvas');
+
+            tooltip = container.append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0)
+                        .attr("id", "textbox")
+                        .style("background-color", "white")
+                        .style("position", "absolute")
+                        .style("border", "solid")
+                        .style("border-width", "1.5px")
+                        .style("border-radius", "5px")
+                        .style("border-color", "#a5a4a3")
+                        .style("padding", "5px")
+                        .style("font-family", "Courier")
+                        .style("font-size", "15px")
+                        .style("pointer-events", "none"); 
             
             canvas.attr('viewBox', `0 0 ${this.width} ${this.height}`)
                 .style('width', '100%')
@@ -319,6 +359,8 @@ class DRComponent extends D3Component {
                     break;
                 case 'beginning':
 
+                    stopAllMovements();
+
                     d3.select('.panda_img')
                         .transition()
                         .ease(d3.easeCubicOut)
@@ -334,7 +376,7 @@ class DRComponent extends D3Component {
                         .attr("transform", function(d) {
                             return "translate(" + getRndInteger(70, width - 70) + "," + getRndInteger(70, width - 70) + ")";
                         })
-                        .attr('opacity', 0.5)
+                        //.attr('opacity', 0.5)
                         .on('end', function(d, i) {
                             if (i == s.size() - 1) {
                                 intervalIDs.push(setInterval(moveInCircles, 20));
@@ -369,39 +411,50 @@ class DRComponent extends D3Component {
                     });
 
                     s.select('.dot')
-                        .transition()
+                        .transition('color_change')
                         .ease(d3.easeCubicOut)
                         .duration(100)
                         .style("fill", "#6C626F");
                     
                     s.select('.arc')
-                        .transition()
+                        .transition('color_change')
                         .ease(d3.easeCubicOut)
                         .duration(100)
                         .style("fill", "#6C626F");
+
+                    s.transition('opacity_change')
+                        .ease(d3.easeCubicOut)
+                        .duration(100)
+                        .attr('opacity', 0.5);
+
+                    canvas.selectAll('.circle_group')
+                        .on("mouseover", null)
+                        .on('mousemove', null)
+                        .on("mouseout", null);
 
                     //intervalIDs.push(setInterval(moveInCircles, 20));
                     break;
 
                 case 'dataset':
                     
-                    stopAllMovements(); // Stop all current movements
                     stopAnimation();
 
                     canvas.selectAll('.circle_group')
                         .on("mouseover", function(d, i) {
                             hoverCir(d3.select(this));
+                            textbox(d, i);
+                        })
+                        .on("mousemove", function(d, i) {
+                            textbox(d, i);
                         })
                         .on("mouseout", function(d, i) {
                             unhoverCir(d3.select(this));
+                            remove_textbox();
                         })
 
-                    s.transition()
+                    s.transition('opacity_change')
                         .ease(d3.easeCubicOut)
                         .duration(1500)
-                        .attr("transform", function(d) {
-                            return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
-                        })
                         .attr('opacity', 1);
                     
                     s.select('.dot')
@@ -426,7 +479,18 @@ class DRComponent extends D3Component {
 
                 case "data points":
 
-                    animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+                    stopAllMovements();
+
+                    s.transition()
+                        .ease(d3.easeCubicOut)
+                        .duration(1500)
+                        .attr("transform", function(d) {
+                            return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                        })
+                        .on('end', function() {
+                            animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+                        })
+
 
             }
         }

@@ -162,6 +162,13 @@ h3 {
   padding: 0.25em;
 }
 
+.emphasize2 {
+  color: rgb(93, 32, 91);
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0.25em;
+}
+
 .highlight pre, .code pre {
   height: 50vh;
 }
