@@ -142,13 +142,28 @@
       ### ResNet-34 Model
       For this article, we will first use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
       [br/]
-      [br/]
-      ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
-      which utilizes [span className:"emphasize"]residual learning[/span]. 
-      Residual learning helps the network to learn residual functions with reference to the layer inputs, 
-      which addresses the vanishing gradient problem and allows the training of much deeper networks.
-      This architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
-      [br/]
+      [var name:"showResNet" value:false /]
+
+      [conditional if:`!showResNet`]
+        [button onClick:`showResNet = true;`]
+          Show more about ResNet-34
+        [/button]
+      [/conditional]
+
+      [conditional if:`showResNet`]
+        ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
+        which utilizes [span className:"emphasize"]residual learning[/span]. 
+        Residual learning helps the network to learn residual functions with reference to the layer inputs, 
+        which addresses the vanishing gradient problem and allows the training of much deeper networks.
+        This architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
+        [br/]
+        [br/]
+        [button onClick:`showResNet = false;`]
+          Show less about ResNet-34
+        [/button]
+
+      [/conditional]
+
       [br/]
       To extract ResNet-34's perception of the images, 
       we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
