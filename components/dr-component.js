@@ -412,22 +412,23 @@ class DRComponent extends D3Component {
             const img = canvas.append('image')
                 .attr('class', 'cursor')
                 .attr('xlink:href', 'static/images/cursor.png')
-                .attr('width', 100) // Adjust the size as needed
-                .attr('height', 100); // Adjust the size as needed
+                .attr('width', 100 * width_ / 500) // Adjust the size as needed
+                .attr('height', 100 * width_ / 500)
+                .style('opacity', 0)
+                .style('visibility', 'hidden'); // Adjust the size as needed
 
-            const radius = 20; // Radius of the circular motion
+            const radius = 25; // Radius of the circular motion
             let angle = 0; // Initial angle
 
             function moveInCircles_() {
                 angle += 0.03; // Slower speed of the circular movement
-                const x = width_ - radius + radius * Math.cos(angle) - 120; // Adjusted for bottom right
-                const y = width_ - radius + radius * Math.sin(angle) - 120; // Adjusted for bottom right
+                const x = width_ - radius + radius * Math.cos(angle) - 120  * width_ / 500; // Adjusted for bottom right
+                const y = width_ - radius + radius * Math.sin(angle) - 120  * width_ / 500; // Adjusted for bottom right
                 img.attr('x', x).attr('y', y);
                 requestAnimationFrame(moveInCircles_);
             }
 
             moveInCircles_();
-
 
             const gGrid = canvas.select('.grid_container').append("g").attr('class', 'grid');
             grid(gGrid, x, y, node);
@@ -587,10 +588,27 @@ class DRComponent extends D3Component {
                     
                     stopAnimation();
 
+                    d3.select('.cursor')
+                        .style('visibility', 'visible')
+                        .transition()
+                        .duration(2000)
+                        .style('opacity', 1);
+
                     canvas.selectAll('.circle_group')
                         .on("mouseover", function(d, i) {
                             hoverCir(d3.select(this));
                             textbox(d, i);
+
+                            if (d3.select('.cursor').style('visibility') !== 'hidden') {
+                                d3.select('.cursor')
+                                    .transition()
+                                    .duration(1000)
+                                    .style('opacity', 0)
+                                    .on('end', function() {
+                                        d3.select('.cursor')
+                                            .style('visibility', 'hidden');
+                                    });
+                            }
 
                             d3.select('.img_thumbnail')
                                 .interrupt()
