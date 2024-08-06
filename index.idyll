@@ -44,13 +44,11 @@
 
     [div className:"text"]
         ## ABSTRACT
-        Though deep learning models have achieved remarkable success in diverse domains (e.g., faicial recognition, autonomous driving),
-        these models have been proven to be quite brittle to perturbations around the input data. 
-        [span className:"emphasize"]Adversarial machine learning (AML)[/span] studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strength model robustness. 
-        Specifically for image classification,it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that not human-interpretable, 
-        as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
-        This guide will utilize interative visualizations to provide a non-expert introduction into adversarial attacks, 
-        and visualize the impact of FGSM attack on two different ResNet-34s.  
+        Though deep learning models have achieved remarkable success in diverse domains (e.g., facial recognition, autonomous driving), these models have been proven to be quite brittle to perturbations around the input data. 
+        [span className:"emphasize"]Adversarial machine learning (AML)[/span] studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strengthen model robustness. 
+        Specifically, for image classification, it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that are not human-interpretable, as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
+        This guide will utilize interactive visualizations to provide a non-expert introduction to adversarial attacks, and visualize the impact of FGSM attacks on two different ResNet-34 models.
+ 
     [/div]
   [/Step]
 
@@ -409,10 +407,11 @@
       ## ADVERSARIAL TRAINING
       ### Training ResNet-34 Differently
       Now, let's take a look at a different ResNet-34. 
+      (Let's call it ResNet-34★ .)
       [br/]
       [br/]
       On the right, we have loaded the CIFAR-10 embeddings of this new ResNet-34 when no attack has been conducted. 
-      This ResNet-34 shares the same model architecture as the previous ResNet-34 we just explored, 
+      This ResNet-34★ shares the same model architecture as the previous ResNet-34 we just explored, 
       but it has been specifically trained with [span className:"emphasize"]adversarial training (AT)[/span]. 
     [/div]
     [div className:"text"]
@@ -423,7 +422,7 @@
       which trains classifiers with adversarial examples by adding them to the training set or through regularizations.  
       [br/]
       [br/]
-      Here, we use [span className:"emphasize"]TRadeoff-inspired Adversarial DEfense via Surrogate-loss minimization (TRADES)[/span] to re-train ResNet-34, one of the state-of-the-art adversarial training methods. 
+      Here, we use [span className:"emphasize"]TRadeoff-inspired Adversarial DEfense via Surrogate-loss minimization (TRADES)[/span] to train ResNet-34★, one of the state-of-the-art adversarial training methods. 
 
       [var name:"showTRADES" value:false /]
 
@@ -436,7 +435,7 @@
       [conditional if:`showTRADES`]
         ### What is TRADES?
         TRADES is an advanced AT method designed to enhance the robustness of neural networks against adversarial attacks. 
-        It focuses on balancing the trade-off between accuracy on unperturbed data and robustness against adversarial examples by introducing a surrogate loss function. 
+        It focuses on balancing the trade-off between accuracy on unperturbed data and robustness against adversarial examples by introducing a [span className:"emphasize"]surrogate loss[/span] function. 
         This surrogate loss enalizes large deviations in predictions caused by small perturbations, ensuring that a model that can maintain relatively high natural accuracy while being resilient to adversarial manipulations. 
         [br/]
         [br/]
@@ -455,7 +454,7 @@
 
     [div className:"text"]
       ### Applying Perturbations Again 
-      Now, let's trying conduting the FGSM attack on this new ResNet-34 and see what happenes. 
+      Now, let's trying conduting the FGSM attack on ResNet-34★ and see what happens. 
     [/div]
 
     [div className:"slider_container" style:`{display: 'flex', flexAlign: 'row', textAlign: 'center'}`]
@@ -468,6 +467,40 @@
         Perturbation Size (ε): [Display value:perturbation_val /]
       [/div]
 
+    [/div]
+
+    [div className:"text"]
+      [span className:"emphasize2"]
+        What do you notice about ResNet-34★'s behavior compared to ResNet-34's?
+        [/span]
+    [/div]
+
+    [var name:"showInsights4" value:false /]
+
+    [conditional if:`!showInsights4`]
+      [br/]
+      [button onClick:`showInsights4 = true;`]
+        Show insights
+      [/button]
+    [/conditional]
+
+    [conditional if:`showInsights4`]
+
+      [div className:"panel"]
+        Compared to the naturally trained ResNet-34, the FGSM attack barely changes how ResNet-34★ perceives the CIFAR-10 dataset (as the data points are barely moving). 
+        Hence, ResNet-34★ achieves higher robustness than ResNet-34.
+        [br/]
+        [br/]
+        [button onClick:`showInsights4 = false;`]
+          Hide insights
+        [/button]
+
+      [/div]
+
+    [/conditional]
+
+    [div className:"text"]
+      ### How Comes the Difference?
     [/div]
 
   [/Step]
