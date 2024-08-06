@@ -2,14 +2,17 @@ const React = require('react');
 const D3Component = require('idyll-d3-component');
 const d3 = require('d3');
 
+let svg;
+let data;
+const fixedHeight = 200;
+
 class BarComponent extends D3Component {
     initialize(node, props) {
         const container = d3.select(node).style('position', 'relative');
         const margin = { top: 20, right: 20, bottom: 40, left: 50 };
-        const fixedHeight = 200; // Set a fixed height for the chart
         const maxWidth = 400; // Set a maximum width for the chart
 
-        const svg = container.append('svg')
+        svg = container.append('svg')
             .attr('class', 'bar_container')
             .style('display', 'block')
             .style('margin', '0 auto'); // Center the SVG horizontally
@@ -25,7 +28,7 @@ class BarComponent extends D3Component {
             .style('pointer-events', 'none')
             .style('opacity', 0); // Hidden by default
 
-        const data = [
+        data = [
             { label: 'Accuracy', value: 93 },
             { label: 'Robustness', value: 93 }
         ];
@@ -116,6 +119,39 @@ class BarComponent extends D3Component {
         updateDimensions();
         window.addEventListener('resize', updateDimensions);
     }
+
+    update(props) {
+
+        if (props.perturb !== this.props.perturb) {
+
+            let newRobustness = 93;
+
+            if (props.perturb === 0.01) {
+                newRobustness = 85;
+            } else if (props.perturb === 0.02) {
+                newRobustness = 72;
+            } else if (props.perturb === 0.03) {
+                newRobustness = 57;
+            }
+
+            data[1].value = newRobustness;
+
+            const y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([fixedHeight, 0]);
+
+            svg.selectAll('.bar_')
+                .data(data)
+                .transition()
+                .ease(d3.easeSin)
+                .duration(500)
+                .attr('y', d => y(d.value))
+                .attr('height', d => fixedHeight - y(d.value))
+
+        }
+
+    }
+
 }
 
 module.exports = BarComponent;

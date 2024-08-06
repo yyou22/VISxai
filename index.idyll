@@ -317,7 +317,9 @@
       Check the bar chart below to see how accuracy drops after applying perturbations.
     [/div]
 
-    [BarComponent/]
+    [BarComponent
+       perturb:perturbation_val
+    /]
 
     [div className:"text"]
       ### Exploring Dataset-level Attack Impact
