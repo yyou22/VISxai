@@ -4,39 +4,50 @@ const d3 = require('d3');
 
 class InstanceComponent extends D3Component {
     initialize(node, props) {
-        const container = d3.select(node).style('position', 'relative');
+        const container = d3.select(node).style('position', 'relative').style('width', '300px').style('height', '240px');
 
         // Define dimensions
         const width = 300;
-        const height = 200;
+        const height = 240;
         const imageSize = 100;
         const lineLength = 100; // Make the horizontal parts longer
 
         // Create SVG container
         const svg = container.append('svg')
             .attr('width', width)
-            .attr('height', height);
+            .attr('height', height)
+            .style('position', 'absolute')
+            .style('top', 0)
+            .style('left', 0);
 
-        // Append top image
-        svg.append('image')
-            .attr('xlink:href', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+        // Append top image using <img> tag
+        container.append('img')
+            .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
             .attr('width', imageSize)
             .attr('height', imageSize)
-            .attr('x', 0)
-            .attr('y', (height / 2) - imageSize - 10);
+            .style('position', 'absolute')
+            .style('left', 0)
+            .style('top', `${(height / 2) - imageSize - 25}px`) // Adjusted to separate images further
+            .style('border-radius', '10px')
+            .style('box-shadow', '0px 3px 2px #27082a47')
+            .style('border', '10px solid #a5a4a3');
 
-        // Append bottom image
-        svg.append('image')
-            .attr('xlink:href', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+        // Append bottom image using <img> tag
+        container.append('img')
+            .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
             .attr('width', imageSize)
             .attr('height', imageSize)
-            .attr('x', 0)
-            .attr('y', (height / 2) + 10);
+            .style('position', 'absolute')
+            .style('left', 0)
+            .style('top', `${(height / 2) + 25}px`) // Adjusted to separate images further
+            .style('border-radius', '10px')
+            .style('box-shadow', '0px 3px 2px #27082a47')
+            .style('border', '10px solid #a5a4a3');
 
         // Append moving dotted lines
         const lineData = [
-            { x: imageSize, y: (height / 2) - imageSize / 2 - 10, direction: 'down' },
-            { x: imageSize, y: (height / 2) + imageSize / 2 + 10, direction: 'up' }
+            { x: imageSize, y: (height / 2) - imageSize / 2 - 30, direction: 'down' }, // Adjusted
+            { x: imageSize, y: (height / 2) + imageSize / 2 + 30, direction: 'up' } // Adjusted
         ];
 
         lineData.forEach((line, index) => {
