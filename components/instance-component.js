@@ -4,9 +4,11 @@ const d3 = require('d3');
 
 import eventEmitter from './eventEmitter';
 
+let cur_perturb = 0;
+
 class InstanceComponent extends D3Component {
     initialize(node, props) {
-        const container = d3.select(node).style('position', 'relative').style('width', '500px').style('height', '240px').attr('class', 'instance_view');
+        const container = d3.select(node).style('position', 'relative').style('width', '500px').style('height', '300px').attr('class', 'instance_view');
 
         // Define dimensions
         const width = 500;
@@ -25,7 +27,8 @@ class InstanceComponent extends D3Component {
         // Append top image using <img> tag
         container.append('img')
             .attr('class', 'instance_img')
-            .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+            .attr('id', 'instance_img1')
+            .attr('src', "static/images/panda_.gif")
             .attr('width', imageSize)
             .attr('height', imageSize)
             .style('position', 'absolute')
@@ -36,10 +39,20 @@ class InstanceComponent extends D3Component {
             .style('border', '10px solid #a5a4a3')
             .style('outline', '2px solid #505050'); // Add a thin darker gray outline
 
+        // Add text label for the top image
+        container.append('text')
+            .text('original image')
+            .style('position', 'absolute')
+            .style('left', '22px')
+            .style('top', `${(height / 2)}px`)
+            .style('font-size', '12px')
+            .style('color', 'black');
+
         // Append bottom image using <img> tag
         container.append('img')
             .attr('class', 'instance_img')
-            .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+            .attr('id', 'instance_img2')
+            .attr('src', "static/images/question_.gif")
             .attr('width', imageSize)
             .attr('height', imageSize)
             .style('position', 'absolute')
@@ -49,6 +62,16 @@ class InstanceComponent extends D3Component {
             .style('box-shadow', '0px 3px 2px #27082a47')
             .style('border', '10px solid #a5a4a3')
             .style('outline', '2px solid #505050'); // Add a thin darker gray outline
+
+        // Add text label for the bottom image
+        container.append('text')
+            .attr('class', 'noise_text')
+            .text('noise × 0.00')
+            .style('position', 'absolute')
+            .style('left', '22px')
+            .style('top', `${(height / 2) + 142}px`)
+            .style('font-size', '12px')
+            .style('color', 'black');
 
         // Append moving dotted lines
         const lineData = [
@@ -116,7 +139,8 @@ class InstanceComponent extends D3Component {
         // Append another image at the end of the new horizontal line
         container.append('img')
             .attr('class', 'instance_img')
-            .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
+            .attr('id', 'instance_img3')
+            .attr('src', "static/images/panda_noise.gif")
             .attr('width', imageSize)
             .attr('height', imageSize)
             .style('position', 'absolute')
@@ -126,6 +150,15 @@ class InstanceComponent extends D3Component {
             .style('box-shadow', '0px 3px 2px #27082a47')
             .style('border', '10px solid #a5a4a3')
             .style('outline', '2px solid #505050'); // Add a thin darker gray outline
+
+        // Add text label for the third image
+        container.append('text')
+            .text('adversarial image')
+            .style('position', 'absolute')
+            .style('left', `${imageSize + lineLength * 2 - imageSize / 2 + 10}px`)
+            .style('top', `${(height / 2) + 60}px`)
+            .style('font-size', '12px')
+            .style('color', 'black');
 
         // Add the CSS animation style
         const style = document.createElement('style');
@@ -143,15 +176,56 @@ class InstanceComponent extends D3Component {
         document.getElementsByTagName('head')[0].appendChild(style);
 
         eventEmitter.on('imageSelected', (imageId) => {
+            //console.log(`Event received with image ID: ${imageId}`);
 
-            d3.selectAll('.instance_img')
+            let perturb_file;
+
+            container
+                .select('.noise_text')
+                .text('noise × ' + Number(cur_perturb).toFixed(2));
+
+            if (cur_perturb === 0) {
+                perturb_file = '000';
+            } else if (cur_perturb === 0.01) {
+                perturb_file = '001';
+            } else if (cur_perturb === 0.02) {
+                perturb_file = '002';
+            } else if (cur_perturb === 0.03) {
+                perturb_file = '003';
+            } else {
+                // Handle other values or default case if needed
+                perturb_file = '000'; 
+            }
+
+            d3.select('#instance_img1')
                 .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png`);
 
-        });
 
+            if (cur_perturb === 0) {
+                d3.select('#instance_img2')
+                    .attr('src', "static/images/question_.gif")
+                
+                d3.select('#instance_img3')
+                    .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png`);
+
+            }
+            else {
+                d3.select('#instance_img2')
+                    .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/001/${imageId}/noise.png`);
+                
+                d3.select('#instance_img3')
+                    .attr('src', 'https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/' + perturb_file + '/' + imageId + '/img.png');
+            }
+
+        });
     }
 
     update(props) {
+
+        if (props.perturb !== this.props.perturb) {
+            cur_perturb = props.perturb;
+        }
+
     }
 }
 

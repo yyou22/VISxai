@@ -207,6 +207,7 @@ h3 {
   background-size: 10px 10px;
   /*border: 2px solid #4e4250;*/
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Adds a drop shadow */
+  overflow: hidden;
 }
 
 /* CSS for scroller portion of tutorial to follow along */

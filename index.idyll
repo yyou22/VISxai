@@ -57,7 +57,7 @@
   [Step state:"beginning"]
     [div className:"text"]
       ## FROM THE BEGINNING
-      Before we use visualizations to understand the impacts of adversarial attacks on CNNs (yes, those are soon-to-be data points you see floating on the right), let's first go through some basics.
+      Before we use visualizations to understand the impacts of adversarial attacks on CNNs (yes, those are soon-to-be data points you see floating on the right), let's first go through the basics of adversarial attacks.
     [/div]
     [div className:"text"]
       ### What is an Adversarial Attack?
@@ -360,12 +360,44 @@
     [/conditional]
 
     [div className:"text"]
-      ### Before & After
+      ### Is It Imperceptible?
       To investigate specific images before and after the attack, 
       click on a data point and observe the natural and adversarial images below.
       [br/]
     [/div]
-    [InstanceComponent/]
+    [InstanceComponent
+      perturb:perturbation_val
+    /]
+    [div className:"text"]
+      [span className:"emphasize2"]Can you spot the differences between the images?[/span]
+    [/div]
+
+    [var name:"showInsights3" value:false /]
+
+    [conditional if:`!showInsights3`]
+      [br/]
+      [button onClick:`showInsights3 = true;`]
+        Show insights
+      [/button]
+    [/conditional]
+
+    [conditional if:`showInsights3`]
+
+      [div className:"panel"]
+        The larger the perturbation size, 
+        the more obvious the perturbations are and the more effective the attack is.
+        That's why attackers aim to find a middle point where the perturbations are subtle yet sufficient to lead to a misclassification.
+        However, keep in mind that the CIFAR-10 dataset consists of 32 × 32 images, 
+        so the applied noise is relatively more apparent compared to high-resolution images (e.g., the panda image).
+        [br/]
+        [br/]
+        [button onClick:`showInsights3 = false;`]
+          Hide insights
+        [/button]
+
+      [/div]
+
+    [/conditional]
 
   [/Step]
 
