@@ -695,6 +695,14 @@ class DRComponent extends D3Component {
                         .duration(1500)
                         .style('opacity', 1);
 
+                    canvas.selectAll('.cur_contour')
+                        .filter(function() { 
+                            return d3.select(this).style('opacity') == 1 && d3.select(this).attr('id') != 'cur_contour0'; 
+                        })
+                        .transition()
+                        .duration(1500)
+                        .style("opacity", 0)
+
                     d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
                         if (+d.vis == 1) {
                             d.xt = +d.xpost;

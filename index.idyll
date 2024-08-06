@@ -50,7 +50,7 @@
         Specifically for image classification,it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that not human-interpretable, 
         as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
         This guide will utilize interative visualizations to provide a non-expert introduction into adversarial attacks, 
-        and provide comparisons of two popular attacks on CNNs. 
+        and visualize the impact of FGSM attack on two different ResNet-34s.  
     [/div]
   [/Step]
 
@@ -170,7 +170,7 @@
       we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
     [/div]
     [div className:"text"]
-      ### Exploring the data points
+      ### Exploring the Data Points
       [span className:"emphasize2"]
       Start exploring the data points by hovering over them and observing their ground truth labels and ResNet-34's predictions of them.
       [/span]
@@ -316,6 +316,14 @@
     [/div]
 
     [BarComponent/]
+
+    [div className:"text"]
+      ### Exploring Dataset-level Attack Impact
+      [span className:"emphasize2"]
+      Adjust the slider and observe the changes in model embeddings and prediction accuracy. 
+      What are some of the interesting insights you can find? 
+      [/span]
+    [/div]
 
   [/Step]
 
