@@ -4,7 +4,7 @@ const d3 = require('d3');
 
 class InstanceComponent extends D3Component {
     initialize(node, props) {
-        const container = d3.select(node).style('position', 'relative').style('width', '500px').style('height', '240px');
+        const container = d3.select(node).style('position', 'relative').style('width', '500px').style('height', '240px').attr('class', 'instance_view');
 
         // Define dimensions
         const width = 500;
@@ -16,12 +16,13 @@ class InstanceComponent extends D3Component {
         const svg = container.append('svg')
             .attr('width', width)
             .attr('height', height)
-            .style('position', 'absolute')
+            .style('position', 'relative')
             .style('top', 0)
             .style('left', 0);
 
         // Append top image using <img> tag
         container.append('img')
+            .attr('class', 'instance_img')
             .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
             .attr('width', imageSize)
             .attr('height', imageSize)
@@ -35,6 +36,7 @@ class InstanceComponent extends D3Component {
 
         // Append bottom image using <img> tag
         container.append('img')
+            .attr('class', 'instance_img')
             .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
             .attr('width', imageSize)
             .attr('height', imageSize)
@@ -111,6 +113,7 @@ class InstanceComponent extends D3Component {
 
         // Append another image at the end of the new horizontal line
         container.append('img')
+            .attr('class', 'instance_img')
             .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/0/img.png")
             .attr('width', imageSize)
             .attr('height', imageSize)
