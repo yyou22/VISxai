@@ -2,6 +2,7 @@ const React = require('react');
 const D3Component = require('idyll-d3-component');
 const d3 = require('d3');
 import * as d3HB from "d3-hexbin";
+import eventEmitter from './eventEmitter';
 
 var k = 1.0;
 const stroke_color = "#554F5D";
@@ -655,6 +656,10 @@ class DRComponent extends D3Component {
                                     d3.select(this)
                                     .style('visibility', 'hidden')
                                 })
+                        })
+                        .on("click", function(d, i) {
+                            const success = eventEmitter.emit('imageSelected', d.ogi);
+                            //console.log(success);
                         })
 
                     s.transition('opacity_change')

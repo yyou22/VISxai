@@ -2,6 +2,8 @@ const React = require('react');
 const D3Component = require('idyll-d3-component');
 const d3 = require('d3');
 
+import eventEmitter from './eventEmitter';
+
 class InstanceComponent extends D3Component {
     initialize(node, props) {
         const container = d3.select(node).style('position', 'relative').style('width', '500px').style('height', '240px').attr('class', 'instance_view');
@@ -139,6 +141,14 @@ class InstanceComponent extends D3Component {
             }
         `;
         document.getElementsByTagName('head')[0].appendChild(style);
+
+        eventEmitter.on('imageSelected', (imageId) => {
+
+            d3.selectAll('.instance_img')
+                .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png`);
+
+        });
+
     }
 
     update(props) {
