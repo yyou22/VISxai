@@ -42,6 +42,23 @@ export function InitiCanHexbin() {
 
 }
 
+function changeContour(num) {
+
+    canvas.selectAll('.cur_contour')
+        .filter(function() { 
+            return d3.select(this).style('opacity') == 1 && d3.select(this).attr('id') != 'cur_contour' + String(num); 
+        })
+        .transition()
+        .duration(360)
+        .style("opacity", 0)
+
+    canvas.select('#cur_contour' + String(num))
+        .transition()
+        .duration(360)
+        .style("opacity", 1)
+
+}
+
 function initiateHexbin(data, i) {
 
     x1 = d3.scaleLinear()
@@ -715,18 +732,25 @@ class DRComponent extends D3Component {
             
             //console.log(props.perturb);
 
+            let contour_num = 0;
+
             // Set cur_perturb based on props.perturb
             if (props.perturb === 0) {
                 cur_perturb = '000';
+                contour_num = 0;
             } else if (props.perturb === 0.01) {
                 cur_perturb = '001';
+                contour_num = 1;
             } else if (props.perturb === 0.02) {
                 cur_perturb = '002';
+                contour_num = 2;
             } else if (props.perturb === 0.03) {
                 cur_perturb = '003';
+                contour_num = 3;
             } else {
                 // Handle other values or default case if needed
-                cur_perturb = '000'; // Default value if no match
+                cur_perturb = '000'; 
+                contour_num = 0;
             }
 
             var i_ = 0;
@@ -755,6 +779,8 @@ class DRComponent extends D3Component {
                     return d;
                 }
             }).then(function(data) {
+
+                changeContour(contour_num);
 
                 canvas.selectAll('.circle_group')
                         .data(data)
