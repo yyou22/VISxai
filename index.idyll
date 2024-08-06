@@ -6,6 +6,7 @@
 [Fixed]
   [DRComponent
     state:scrollState
+    perturb:perturbation_val
   /]
 [/Fixed]
 

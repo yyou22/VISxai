@@ -13,12 +13,12 @@ let map_ = ['#f48382', '#f8bd61', '#ece137', '#c3c580', '#82a69a', '#80b2c5', '#
 let label_ = ['Airplane', 'Automobile', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
 let width_;
 let container, canvas;
-let cur_perturb = 0;
+let cur_perturb = '000';
 
 const perturb_files = ['000', '001', '002', '003'];
 let max_radius;
 
-export function InitiCanHexbin(cur_perturb) {
+export function InitiCanHexbin() {
 
     max_radius = 10 * width_ / 500;
 
@@ -35,14 +35,14 @@ export function InitiCanHexbin(cur_perturb) {
     
         }).then(function(data) {
     
-            initiateHexbin(data, i, cur_perturb);
+            initiateHexbin(data, i);
     
         })
     }
 
 }
 
-function initiateHexbin(data, i, cur_perturb=0) {
+function initiateHexbin(data, i) {
 
     x1 = d3.scaleLinear()
             .domain([0, 1.0])
@@ -405,7 +405,7 @@ class DRComponent extends D3Component {
             canvas.append('g').attr('class', 'hexbin_container').attr('visibility', 'hidden');
             canvas.append('g').attr('class', 'circle_container');
 
-            InitiCanHexbin('000');
+            InitiCanHexbin();
 
 
             //the cursor
@@ -473,6 +473,8 @@ class DRComponent extends D3Component {
     }
 
     update(props) {
+
+        //console.log(props.perturb);
         
         //this.width = this.node.getBoundingClientRect().width;
         var width = this.width;
@@ -687,6 +689,68 @@ class DRComponent extends D3Component {
                         })
 
             }
+        }
+        else if (props.state === 'slider' && props.perturb !== this.props.perturb) {
+            
+            //console.log(props.perturb);
+
+            // Set cur_perturb based on props.perturb
+            if (props.perturb === 0) {
+                cur_perturb = '000';
+            } else if (props.perturb === 0.01) {
+                cur_perturb = '001';
+            } else if (props.perturb === 0.02) {
+                cur_perturb = '002';
+            } else if (props.perturb === 0.03) {
+                cur_perturb = '003';
+            } else {
+                // Handle other values or default case if needed
+                cur_perturb = '000'; // Default value if no match
+            }
+
+            var i_ = 0;
+
+            d3.csv('static/data/resnet/' + cur_perturb + '/lvl4.csv', function(d, i) {
+                if (+d.vis == 1) {
+                    d.xt = +d.xpost;
+                    d.yt = +d.ypost;
+                    d.xp = +d.xposp;
+                    d.yp = +d.yposp;
+                    d.pred = +d.pred;
+                    d.target = +d.target;
+                    d.idx = i_;
+                    d.ogi = +d.ogi;
+                    i_ += 1;
+                    return d;
+                }
+            }).then(function(data) {
+
+                canvas.selectAll('.circle_group')
+                        .data(data)
+                        .enter();
+
+                canvas.selectAll('.arc')
+                        .data(data)
+                        .enter();
+
+                canvas.selectAll('.circle_group')
+                        .transition()
+                        .ease(d3.easeSin)
+                        .duration(600)
+                        .attr("transform", function(d) {
+                            return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                        })
+
+                canvas.selectAll('.arc')
+                    .transition()
+                    .ease(d3.easeSin)
+                    .duration(800)
+                    .style("fill", function(d) {
+                        return map_[d.pred];
+                    })
+
+            });
+
         }
     }
 }
