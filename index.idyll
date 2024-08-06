@@ -253,7 +253,7 @@
     [div className:"text"]
       ## CONDUCTING THE ATTACK
       ### Applying Perturbations
-      Previously, we introduced the FGSM attack, which generate [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
+      Previously, we introduced the FGSM attack, which generates [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
       Perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions.  
       [br/]
       [br/]
