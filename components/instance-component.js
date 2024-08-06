@@ -176,48 +176,27 @@ class InstanceComponent extends D3Component {
         document.getElementsByTagName('head')[0].appendChild(style);
 
         eventEmitter.on('imageSelected', (imageId) => {
-            //console.log(`Event received with image ID: ${imageId}`);
-
-            let perturb_file;
-
+            // Define the perturbation file based on the current perturbation value
+            const perturb_file = cur_perturb === 0 ? '000' : (cur_perturb * 100).toString().padStart(3, '0');
+        
+            // Update the noise text
             container
                 .select('.noise_text')
                 .text('noise × ' + Number(cur_perturb).toFixed(2));
-
-            if (cur_perturb === 0) {
-                perturb_file = '000';
-            } else if (cur_perturb === 0.01) {
-                perturb_file = '001';
-            } else if (cur_perturb === 0.02) {
-                perturb_file = '002';
-            } else if (cur_perturb === 0.03) {
-                perturb_file = '003';
-            } else {
-                // Handle other values or default case if needed
-                perturb_file = '000'; 
-            }
-
-            d3.select('#instance_img1')
-                .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png`);
-
-
-            if (cur_perturb === 0) {
-                d3.select('#instance_img2')
-                    .attr('src', "static/images/question_.gif")
-                
-                d3.select('#instance_img3')
-                    .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png`);
-
-            }
-            else {
-                d3.select('#instance_img2')
-                    .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/001/${imageId}/noise.png`);
-                
-                d3.select('#instance_img3')
-                    .attr('src', 'https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/' + perturb_file + '/' + imageId + '/img.png');
-            }
-
+        
+            // Update the image sources
+            const images = [
+                { selector: '#instance_img1', src: `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png` },
+                { selector: '#instance_img2', src: cur_perturb === 0 ? "static/images/question_.gif" : `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/001/${imageId}/noise.png` },
+                { selector: '#instance_img3', src: cur_perturb === 0 ? `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/${imageId}/img.png` : `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/${perturb_file}/${imageId}/img.png` }
+            ];
+        
+            // Apply the new sources to the images
+            images.forEach(image => {
+                d3.select(image.selector).attr('src', image.src);
+            });
         });
+        
     }
 
     update(props) {

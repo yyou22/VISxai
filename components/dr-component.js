@@ -412,6 +412,7 @@ class DRComponent extends D3Component {
                 d.idx = i_;
                 d.ogi = +d.ogi;
                 i_ += 1;
+                d.og_pred = +d.pred;
                 return d;
             }
         }).then(function(data) {
@@ -658,8 +659,14 @@ class DRComponent extends D3Component {
                                 })
                         })
                         .on("click", function(d, i) {
-                            const success = eventEmitter.emit('imageSelected', d.ogi);
+                            const imageSuccess = eventEmitter.emit('imageSelected', d.ogi);
                             //console.log(success);
+                            const tableSuccess = eventEmitter.emit('circleGroupClicked', {
+                                groundTruthLabel: label_[d.target], 
+                                originalPrediction: label_[d3.select(this).attr('pred')],
+                                currentPrediction: label_[d.pred],
+                            });
+                            console.log(tableSuccess);
                         })
 
                     s.transition('opacity_change')
