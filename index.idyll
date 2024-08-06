@@ -407,6 +407,67 @@
 
     [div className:"text"]
       ## ADVERSARIAL TRAINING
+      ### Training ResNet-34 Differently
+      Now, let's take a look at a different ResNet-34. 
+      [br/]
+      [br/]
+      On the right, we have loaded the CIFAR-10 embeddings of this new ResNet-34 when no attack has been conducted. 
+      This ResNet-34 shares the same model architecture as the previous ResNet-34 we just explored, 
+      but it has been specifically trained with [span className:"emphasize"]adversarial training (AT)[/span]. 
+    [/div]
+    [div className:"text"]
+      ### What is Adversarial Training? 
+      To counter adversarial attacks, 
+      various defense methods have been proposed to fortify model robustness against adversarial inputs. 
+      AT is currently most effective defense, 
+      which trains classifiers with adversarial examples by adding them to the training set or through regularizations.  
+      [br/]
+      [br/]
+      Here, we use [span className:"emphasize"]TRadeoff-inspired Adversarial DEfense via Surrogate-loss minimization (TRADES)[/span] to re-train ResNet-34, one of the state-of-the-art adversarial training methods. 
+
+      [var name:"showTRADES" value:false /]
+
+      [conditional if:`!showTRADES`]
+        [button onClick:`showTRADES = true;`]
+          Show more about TRADES
+        [/button]
+      [/conditional]
+
+      [conditional if:`showTRADES`]
+        ### What is TRADES?
+        TRADES is an advanced AT method designed to enhance the robustness of neural networks against adversarial attacks. 
+        It focuses on balancing the trade-off between accuracy on unperturbed data and robustness against adversarial examples by introducing a surrogate loss function. 
+        This surrogate loss enalizes large deviations in predictions caused by small perturbations, ensuring that a model that can maintain relatively high natural accuracy while being resilient to adversarial manipulations. 
+        [br/]
+        [br/]
+        Specifically, TRADES uses the following optimization problem for the loss function: 
+        [Equation display:true]
+          \min_{f} \mathbb{E} \left\{ \mathcal{L}(f(X), Y) + \beta \max_{X' \in \mathsf{Ball}(X, \epsilon)} \mathcal{L}(f(X), f(X')) \right\} 
+        [/Equation]
+        [br/]
+        [button onClick:`showTRADES = false;`]
+          Show less about TRADES
+        [/button]
+
+      [/conditional]
+
+    [/div]
+
+    [div className:"text"]
+      ### Applying Perturbations Again 
+      Now, let's trying conduting the FGSM attack on this new ResNet-34 and see what happenes. 
+    [/div]
+
+    [div className:"slider_container" style:`{display: 'flex', flexAlign: 'row', textAlign: 'center'}`]
+
+      [div className:"slider_" style:`{margin: '0 auto'}`]
+        None
+        [Range value:perturbation_val min:0 max:0.03 step:0.01 /]
+        0.03
+        [br/]
+        Perturbation Size (ε): [Display value:perturbation_val /]
+      [/div]
+
     [/div]
 
   [/Step]

@@ -15,11 +15,12 @@ let label_ = ['Airplane', 'Automobile', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'H
 let width_;
 let container, canvas;
 let cur_perturb = '000';
+let cur_model = 'resnet';
 
 const perturb_files = ['000', '001', '002', '003'];
 let max_radius;
 
-export function InitiCanHexbin(model='resnet') {
+export function InitiCanHexbin(model='resnet', callback=null) {
 
     max_radius = 10 * width_ / 500;
 
@@ -37,6 +38,10 @@ export function InitiCanHexbin(model='resnet') {
         }).then(function(data) {
     
             initiateHexbin(data, i);
+
+            if (callback && typeof callback === 'function') {
+                callback();
+            }
     
         })
     }
@@ -759,6 +764,23 @@ class DRComponent extends D3Component {
                         break;
                     }
 
+                    cur_model = 'resnet';
+
+                    d3.select('.hexbin_container')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0)
+                        .on('end', function() {
+                            d3.select(this).selectAll('*').remove();
+                            InitiCanHexbin('resnet', function() {
+                                canvas.select('#cur_contour0').style("opacity", 1);
+                                d3.select('.hexbin_container')
+                                    .transition()
+                                    .duration(500)
+                                    .style('opacity', 1);
+                            });
+                        });
+
                     d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
                         if (+d.vis == 1) {
                             d.xt = +d.xpost;
@@ -791,6 +813,25 @@ class DRComponent extends D3Component {
                     break;
 
                 case "AT":
+
+                    cur_model = 'trades';
+
+                    d3.select('.hexbin_container')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0)
+                        .on('end', function() {
+                            d3.select(this).selectAll('*').remove();
+                            InitiCanHexbin('trades', function() {
+                                canvas.select('#cur_contour0').style("opacity", 1);
+                                d3.select('.hexbin_container')
+                                    .transition()
+                                    .delay(500)
+                                    .duration(500)
+                                    .style('opacity', 1);
+                            });
+                        });
+            
 
                     d3.csv('static/data/trades/000/lvl4.csv', function(d, i) {
                         if (+d.vis == 1) {
@@ -826,7 +867,7 @@ class DRComponent extends D3Component {
 
             }
         }
-        else if (props.state === 'slider' && props.perturb !== this.props.perturb) {
+        else if ((props.state === 'slider' || props.state === 'AT') && props.perturb !== this.props.perturb) {
             
             //console.log(props.perturb);
 
@@ -863,7 +904,7 @@ class DRComponent extends D3Component {
                 .interrupt()
                 .attr('d', drawArc(6.3 * width_ / 500, k));
 
-            d3.csv('static/data/resnet/' + cur_perturb + '/lvl4.csv', function(d, i) {
+            d3.csv('static/data/' + cur_model + '/' + cur_perturb + '/lvl4.csv', function(d, i) {
                 if (+d.vis == 1) {
                     d.xt = +d.xpost;
                     d.yt = +d.ypost;
@@ -907,6 +948,8 @@ class DRComponent extends D3Component {
             });
 
         }
+
+
     }
 }
 
