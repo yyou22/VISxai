@@ -112,7 +112,9 @@
         While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
         [br/]
         [br/]
-        Let's take a look at how the FGSM attack alters CNNs' perceptions of image datasets. 
+        [span className:"emphasize2"]
+        Let's take a look at how the FGSM attack alters a CNN's perception of image datasets.
+        [/span]
       [/div]
 
   [/Step]
@@ -141,7 +143,7 @@
     [/figure]
     [div className:"text"]
       ### ResNet-34 Model
-      For this article, we will first use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perceptions of the CIFAR-10 datasdet by extracting its embeddings. 
+      For this article, we will first use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perception of the CIFAR-10 datasdet by extracting its embeddings. 
       [br/]
       [var name:"showResNet" value:false /]
 
@@ -210,7 +212,7 @@
       ### Exploring the Embedding Distribution
       [span className:"emphasize2"]
       With the help of the hexbin backdrop, take a look at the spatiality of ResNet-34's embeddings projected by t-SNE. 
-      What can you learn about ResNet-34's perceptions of the natural CIFAR-10 dataset? 
+      What can you learn about ResNet-34's perception of the natural CIFAR-10 dataset? 
       [br/]
       [/span]
     [/div]
@@ -249,7 +251,7 @@
   [Step state:"slider"]
 
     [div className:"text"]
-      ## CONDUCTING THE ATTACK - FGSM
+      ## CONDUCTING THE ATTACK
       ### Applying Perturbations
       Previously, we introduced the FGSM attack, which generate [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
       Perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions.  
