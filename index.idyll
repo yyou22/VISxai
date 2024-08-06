@@ -34,7 +34,7 @@
     [CustomHeader
         title:"Panda or Gibbon? How CNNs Get Fooled by Input Noises"
         subtitle:"A Beginner's Introduction to Adversarial Attacks"
-        date:"July 31, 2024"
+        date:"July 30, 2024"
         authors:`[
         { name: "Yuzhe You", link: "https://yuzhe.vercel.app/" },
         { name: "Jian Zhao", link: "https://www.jeffjianzhao.com/" }
@@ -314,7 +314,7 @@
       In AML, 
       [span className:"emphasize"]accuracy (or natural accuracy)[/span] is the model's performance on clean data, 
       while [span className:"emphasize"]robustness (or robust accuracy)[/span] measures its performance on adversarially perturbed data. 
-      Check the bar chart below to see how accuracy drops after applying perturbations.
+      Check the bar chart below to see how accuracy on the entire dataset drops after applying perturbations.
     [/div]
 
     [BarComponent
