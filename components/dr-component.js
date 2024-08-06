@@ -19,13 +19,13 @@ let cur_perturb = '000';
 const perturb_files = ['000', '001', '002', '003'];
 let max_radius;
 
-export function InitiCanHexbin() {
+export function InitiCanHexbin(model='resnet') {
 
     max_radius = 10 * width_ / 500;
 
     for (let i = 0; i < 4; i++) {
 
-        var filename = '/static/data/resnet/' + perturb_files[i] + '/lvl4.csv'
+        var filename = '/static/data/' + model + '/' + perturb_files[i] + '/lvl4.csv'
     
         d3.csv(filename, function(d) {
     
@@ -750,6 +750,79 @@ class DRComponent extends D3Component {
                             })
 
                     });
+
+                    break;
+
+                case "slider":
+
+                    if (this.props.state !== 'AT') {
+                        break;
+                    }
+
+                    d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
+                        if (+d.vis == 1) {
+                            d.xt = +d.xpost;
+                            d.yt = +d.ypost;
+                            d.xp = +d.xposp;
+                            d.yp = +d.yposp;
+                            d.pred = +d.pred;
+                            d.target = +d.target;
+                            d.idx = i_;
+                            d.ogi = +d.ogi;
+                            i_ += 1;
+                            return d;
+                        }
+                    }).then(function(data) {
+
+                        canvas.selectAll('.circle_group')
+                            .data(data)
+                            .enter()
+                            .attr('pred', function(d) { return d.pred; });
+
+                        s.transition()
+                            .ease(d3.easeCubicOut)
+                            .duration(1500)
+                            .attr("transform", function(d) {
+                                return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                            })
+
+                    });
+
+                    break;
+
+                case "AT":
+
+                    d3.csv('static/data/trades/000/lvl4.csv', function(d, i) {
+                        if (+d.vis == 1) {
+                            d.xt = +d.xpost;
+                            d.yt = +d.ypost;
+                            d.xp = +d.xposp;
+                            d.yp = +d.yposp;
+                            d.pred = +d.pred;
+                            d.target = +d.target;
+                            d.idx = i_;
+                            d.ogi = +d.ogi;
+                            i_ += 1;
+                            return d;
+                        }
+                    }).then(function(data) {
+
+                        canvas.selectAll('.circle_group')
+                            .data(data)
+                            .enter()
+                            .attr('pred', function(d) { return d.pred; });
+
+                        s.transition()
+                            .ease(d3.easeCubicOut)
+                            .duration(1500)
+                            .attr("transform", function(d) {
+                                return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                            })
+
+                    });
+
+
+                    break;
 
             }
         }

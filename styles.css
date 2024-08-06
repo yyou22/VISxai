@@ -384,6 +384,22 @@ input[type="range"]::-webkit-slider-thumb {
   image-rendering: pixelated;
 }
 
+.rt-thead {
+  background: #ebc0b2;
+  color: #1E467E;
+  font-weight: 700;
+}
+
+.rt-tbody {
+  color: #1E467E;
+  background: rgb(245, 241, 241);
+}
+
+.ReactTable {
+  box-shadow: 7px 7px 5px #53455d43;
+  border: 2px solid #645c65;
+}
+
 /* Decrease the margin depending on window size for steps */
 /*@media only screen and (min-width: 600px) {
   .gif {

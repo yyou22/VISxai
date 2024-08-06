@@ -368,7 +368,9 @@
     [InstanceComponent
       perturb:perturbation_val
     /]
+    [Table/]
     [div className:"text"]
+      [br/]
       [span className:"emphasize2"]Can you spot the differences between the images?[/span]
     [/div]
 
