@@ -678,15 +678,36 @@ class DRComponent extends D3Component {
                         .duration(1500)
                         .style('opacity', 1);
 
-                    s.transition()
-                        .ease(d3.easeCubicOut)
-                        .duration(1500)
-                        .attr("transform", function(d) {
-                            return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
-                        })
-                        .on('end', function() {
-                            animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
-                        })
+                    d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
+                        if (+d.vis == 1) {
+                            d.xt = +d.xpost;
+                            d.yt = +d.ypost;
+                            d.xp = +d.xposp;
+                            d.yp = +d.yposp;
+                            d.pred = +d.pred;
+                            d.target = +d.target;
+                            d.idx = i_;
+                            d.ogi = +d.ogi;
+                            i_ += 1;
+                            return d;
+                        }
+                    }).then(function(data) {
+
+                        canvas.selectAll('.circle_group')
+                            .data(data)
+                            .enter();
+
+                        s.transition()
+                            .ease(d3.easeCubicOut)
+                            .duration(1500)
+                            .attr("transform", function(d) {
+                                return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
+                            })
+                            .on('end', function() {
+                                animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+                            })
+
+                    });
 
             }
         }
@@ -709,6 +730,16 @@ class DRComponent extends D3Component {
             }
 
             var i_ = 0;
+
+            canvas.selectAll('.circle_group')
+                .select('.dot')
+                .interrupt()
+                .attr("r", 7 / k * width_ / 500);
+            
+            canvas.selectAll('.circle_group')
+                .select('.arc')
+                .interrupt()
+                .attr('d', drawArc(6.3 * width_ / 500, k));
 
             d3.csv('static/data/resnet/' + cur_perturb + '/lvl4.csv', function(d, i) {
                 if (+d.vis == 1) {
