@@ -360,8 +360,8 @@
     [/conditional]
 
     [div className:"text"]
-      ### Before vs. After
-
+      ### Before & After
+      [InstanceComponent/]
     [/div]
 
   [/Step]
