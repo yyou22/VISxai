@@ -36,8 +36,8 @@
         subtitle:"A Beginner's Introduction to Adversarial Attacks"
         date:"July 31, 2024"
         authors:`[
-        { name: "Yuzhe You", link: "FIXME" },
-        { name: "Jian Zhao", link: "FIXME" }
+        { name: "Yuzhe You", link: "https://yuzhe.vercel.app/" },
+        { name: "Jian Zhao", link: "https://www.jeffjianzhao.com/" }
         ]` /]
 
     [div className:"line"][/div]
@@ -228,7 +228,7 @@
     [conditional if:`showInsights`]
 
       [div className:"panel"]
-        From the projection, we can see that the CIFAR-10 embeddings of ResNet-34 form [span className:"emphasize"]small, distinct class clusters[/span].
+        From the projection, we can see that the CIFAR-10 embeddings of ResNet-34 form small, distinct class clusters.
         When no attack has been conducted,
         most of the confusion seems to happen within the center of the projection,
         near the "boundaries" of the distinct clusters.
@@ -237,7 +237,7 @@
         [br/]
         However, something that may catch your attention is that, 
         although a closer distance between instances generally means that the model perceives them as "more similar," 
-        we can see that [span className:"emphasize"]there are classes that we don't deem similar at all close to each other[/span], e.g., birds and automobiles.
+        we can see that there are classes that we don't deem similar at all close to each other, e.g., birds and automobiles.
 
         [button onClick:`showInsights = false;`]
           Hide insights
@@ -325,8 +325,51 @@
       ### Exploring Dataset-level Attack Impact
       [span className:"emphasize2"]
       Adjust the slider and observe the changes in model embeddings and prediction accuracy. 
-      What are some of the interesting insights you can find? 
+      What interesting insights can you find?
       [/span]
+    [/div]
+
+    [var name:"showInsights2" value:false /]
+
+    [conditional if:`!showInsights2`]
+      [br/]
+      [button onClick:`showInsights2 = true;`]
+        Show insights
+      [/button]
+    [/conditional]
+
+    [conditional if:`showInsights2`]
+
+      [div className:"panel"]
+        When the perturbation size is set to values above 0,
+        the data points within the scatterplot start to travel rapidly, mostly towards the center of the plot.
+        This suggests that the FGSM attack has drastically altered ResNet-34's perception of these images' features.
+        [br/]
+        [br/]
+        As the perturbation size increases,
+        ResNet-34's prediction accuracy keeps dropping,
+        eventually reaching 57% at a perturbation size of 0.03.
+        [br/]
+        [br/]
+        [button onClick:`showInsights2 = false;`]
+          Hide insights
+        [/button]
+
+      [/div]
+
+    [/conditional]
+
+    [div className:"text"]
+      ### Before vs. After
+
+    [/div]
+
+  [/Step]
+
+  [Step state:"AT"]
+
+    [div className:"text"]
+      ## ADVERSARIAL TRAINING
     [/div]
 
   [/Step]

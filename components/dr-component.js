@@ -633,7 +633,12 @@ class DRComponent extends D3Component {
                                 .interrupt()
                                 .style('visibility', 'visible')
                                 .style('opacity', 1)
-                                .attr('src', "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/" + d.ogi + "/img.png")
+                                .attr('src', function() {
+                                    if (cur_perturb === '000') {
+                                        return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/" + d.ogi + "/img.png";
+                                    }
+                                    return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/" + cur_perturb  + "/" + d.ogi + "/img.png";
+                                })
                         })
                         .on("mousemove", function(d, i) {
                             textbox(d, i);
