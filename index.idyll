@@ -307,6 +307,16 @@
 
     [/div]
 
+    [div className:"text"]
+      ### Accuracy vs. Robustness
+      In AML, 
+      [span className:"emphasize"]accuracy (or natural accuracy)[/span] is the model's performance on clean data, 
+      while [span className:"emphasize"]robustness (or robust accuracy)[/span] measures its performance on adversarially perturbed data. 
+      Check the bar chart below to see how accuracy drops after applying perturbations.
+    [/div]
+
+    [BarComponent/]
+
   [/Step]
 
 [/Scroller]

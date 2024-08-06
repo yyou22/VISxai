@@ -371,6 +371,10 @@ input[type="range"]::-webkit-slider-thumb {
   border: solid 1px #3e393e;
 }
 
+.bar_ {
+  filter: drop-shadow(0px 3px 2px rgba(39, 8, 42, 0.114));
+}
+
 /* Decrease the margin depending on window size for steps */
 /*@media only screen and (min-width: 600px) {
   .gif {
