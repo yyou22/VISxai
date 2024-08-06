@@ -14,22 +14,32 @@ class BarComponent extends D3Component {
             .style('display', 'block')
             .style('margin', '0 auto'); // Center the SVG horizontally
 
+        // Add a tooltip div. Ensure it's hidden by default.
+        const tooltip = container.append('div')
+            .attr('class', 'tooltip')
+            .style('position', 'absolute')
+            .style('background', 'rgba(0, 0, 0, 0.8)')
+            .style('color', 'white')
+            .style('padding', '5px')
+            .style('border-radius', '5px')
+            .style('pointer-events', 'none')
+            .style('opacity', 0); // Hidden by default
+
         const data = [
             { label: 'Accuracy', value: 93 },
             { label: 'Robustness', value: 93 }
         ];
 
         const updateDimensions = () => {
-            const containerWidth = node.getBoundingClientRect().width;
-            const chartWidth = Math.min(containerWidth - margin.left - margin.right, maxWidth);
+            const containerWidth = Math.min(node.getBoundingClientRect().width - margin.left - margin.right, maxWidth);
 
-            svg.attr('viewBox', `0 0 ${chartWidth + margin.left + margin.right} ${fixedHeight + margin.top + margin.bottom}`)
-                .attr('width', chartWidth + margin.left + margin.right)
+            svg.attr('viewBox', `0 0 ${containerWidth + margin.left + margin.right} ${fixedHeight + margin.top + margin.bottom}`)
+                .attr('width', containerWidth + margin.left + margin.right)
                 .attr('height', fixedHeight + margin.top + margin.bottom);
 
             const x = d3.scaleBand()
                 .domain(data.map(d => d.label))
-                .range([0, chartWidth])
+                .range([0, containerWidth])
                 .padding(0.1);
 
             const y = d3.scaleLinear()
@@ -54,7 +64,25 @@ class BarComponent extends D3Component {
                 .attr('height', d => fixedHeight - y(d.value))
                 .attr('fill', '#D45A9A')
                 .attr('stroke', '#AFA4B4')
-                .attr('stroke-width', '2px'); // Add gray outline
+                .attr('stroke-width', '2px') // Add gray outline
+                .on('mouseover', function(d) {
+                    d3.select(this).attr('fill', '#a896b9'); // Change color on hover
+                    
+                    tooltip.style('opacity', 1) // Show tooltip
+                        .html(`${d.label}: ${d.value}%`)
+                        .style('left', d3.mouse(container.node())[0] + 'px')
+                        .style('top', d3.mouse(container.node())[1] + 'px');
+                })
+                .on('mousemove', function(d) {
+                    tooltip.style('opacity', 1) // Show tooltip
+                        .html(`${d.label}: ${d.value}%`)
+                        .style('left', d3.mouse(container.node())[0] + 10 + 'px')
+                        .style('top', d3.mouse(container.node())[1] + 10 + 'px');
+                })
+                .on('mouseout', function(d) {
+                    d3.select(this).attr('fill', '#D45A9A'); // Revert color
+                    tooltip.style('opacity', 0); // Hide tooltip
+                });
 
             g.append('g')
                 .attr('class', 'x-axis')
