@@ -10,7 +10,7 @@ class InstanceComponent extends D3Component {
         const width = 300;
         const height = 240;
         const imageSize = 100;
-        const lineLength = 100; // Make the horizontal parts longer
+        const lineLength = 150; // Make the horizontal parts longer
 
         // Create SVG container
         const svg = container.append('svg')
@@ -27,10 +27,11 @@ class InstanceComponent extends D3Component {
             .attr('height', imageSize)
             .style('position', 'absolute')
             .style('left', 0)
-            .style('top', `${(height / 2) - imageSize - 25}px`) // Adjusted to separate images further
+            .style('top', `${(height / 2) - imageSize - 20}px`) // Adjusted to separate images further
             .style('border-radius', '10px')
             .style('box-shadow', '0px 3px 2px #27082a47')
-            .style('border', '10px solid #a5a4a3');
+            .style('border', '10px solid #a5a4a3')
+            .style('outline', '2px solid #505050'); // Add a thin darker gray outline
 
         // Append bottom image using <img> tag
         container.append('img')
@@ -39,15 +40,16 @@ class InstanceComponent extends D3Component {
             .attr('height', imageSize)
             .style('position', 'absolute')
             .style('left', 0)
-            .style('top', `${(height / 2) + 25}px`) // Adjusted to separate images further
+            .style('top', `${(height / 2) + 20}px`) // Adjusted to separate images further
             .style('border-radius', '10px')
             .style('box-shadow', '0px 3px 2px #27082a47')
-            .style('border', '10px solid #a5a4a3');
+            .style('border', '10px solid #a5a4a3')
+            .style('outline', '2px solid #505050'); // Add a thin darker gray outline
 
         // Append moving dotted lines
         const lineData = [
-            { x: imageSize, y: (height / 2) - imageSize / 2 - 30, direction: 'down' }, // Adjusted
-            { x: imageSize, y: (height / 2) + imageSize / 2 + 30, direction: 'up' } // Adjusted
+            { x: imageSize, y: (height / 2) - imageSize - 10 + imageSize / 2, direction: 'down' }, // Adjusted
+            { x: imageSize, y: (height / 2) + 30 + imageSize / 2, direction: 'up' } // Adjusted
         ];
 
         lineData.forEach((line, index) => {
@@ -69,29 +71,29 @@ class InstanceComponent extends D3Component {
                 .style('animation', 'dash 0.5s linear infinite'); // Make the animation faster
             
             if (index === 1) {
-                // Append a circle with a plus sign at the meeting point
+                // Append a larger circle with a plus sign at the meeting point
                 svg.append('circle')
                     .attr('cx', line.x + lineLength)
-                    .attr('cy', height / 2)
-                    .attr('r', 10)
-                    .attr('fill', 'white')
-                    .attr('stroke', 'grey')
+                    .attr('cy', height / 2 + 10)
+                    .attr('r', 20) // Make the circle larger
+                    .attr('fill', '#7f609e') // Purple color
+                    .attr('stroke', '#5A2D7A') // Darker purple outline
                     .attr('stroke-width', 2);
 
                 svg.append('line')
                     .attr('x1', line.x + lineLength - 5)
-                    .attr('y1', height / 2)
+                    .attr('y1', height / 2 + 10)
                     .attr('x2', line.x + lineLength + 5)
-                    .attr('y2', height / 2)
-                    .attr('stroke', 'grey')
+                    .attr('y2', height / 2 + 10)
+                    .attr('stroke', 'white') // White color for the plus sign
                     .attr('stroke-width', 2);
 
                 svg.append('line')
                     .attr('x1', line.x + lineLength)
-                    .attr('y1', height / 2 - 5)
+                    .attr('y1', height / 2 + 10 - 5)
                     .attr('x2', line.x + lineLength)
-                    .attr('y2', height / 2 + 5)
-                    .attr('stroke', 'grey')
+                    .attr('y2', height / 2 + 10 + 5)
+                    .attr('stroke', 'white') // White color for the plus sign
                     .attr('stroke-width', 2);
             }
         });

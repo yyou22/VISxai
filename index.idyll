@@ -361,8 +361,11 @@
 
     [div className:"text"]
       ### Before & After
-      [InstanceComponent/]
+      To investigate specific images before and after the attack, 
+      click on a data point and observe the natural and adversarial images below.
+      [br/]
     [/div]
+    [InstanceComponent/]
 
   [/Step]
 
