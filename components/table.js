@@ -10,10 +10,21 @@ class TableComponent extends React.PureComponent {
       data: this.getDefaultData() // Initialize with default data
     };
 
+    // Bind the event handler to the instance
+    this.handleCircleGroupClicked = this.handleCircleGroupClicked.bind(this);
+
     // Listen for the table update event
-    eventEmitter.on('circleGroupClicked', (newData) => {
-      this.setState({ data: [newData] });
-    });
+    eventEmitter.on('circleGroupClicked', this.handleCircleGroupClicked);
+  }
+
+  // Event handler
+  handleCircleGroupClicked(newData) {
+    this.setState({ data: [newData] });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener to prevent memory leaks
+    eventEmitter.off('circleGroupClicked', this.handleCircleGroupClicked);
   }
 
   getColumns() {
