@@ -17,6 +17,14 @@ author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},\
 booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},\
 pages={770--778},\
 year={2016}\
+}\
+@article{van2008visualizing,\
+title={Visualizing data using t-SNE.},\
+author={Van der Maaten, Laurens and Hinton, Geoffrey},\
+journal={Journal of machine learning research},\
+volume={9},\
+number={11},\
+year={2008}\
 }";
 
 export default bibliography;

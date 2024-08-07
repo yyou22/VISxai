@@ -168,36 +168,26 @@
     [div className:"text"]
       ## INTERACTING WITH DATA POINTS
       ### Projecting onto a 2-D Space
-      To reveal important patterns in the embeddings and transform them into a format that can be easily visualized, 
-      we apply [span className:"emphasize"]dimensionality reduction[/span] to project the model embeddings into a lower dimension. 
-      We start by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding). 
+      To reveal important patterns in the embeddings and transform them into a format that can be easily visualized, we apply [span className:"emphasize"]dimensionality reduction[/span] to project the model embeddings into a lower dimension. We start by using [span className:"emphasize"]t-SNE[/span] (t-distributed Stochastic Neighbor Embedding) [cite reference:"van2008visualizing"/].
       [br/]
       [br/]
-      t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving the relative distances. 
-      It highlights clusters and relationships in the data that aren't easily seen in higher dimensions.
+      t-SNE works by converting similarities between data points into probabilities and then maps these points into a 2-D space while preserving the relative distances. It highlights clusters and relationships in the data that aren't easily seen in higher dimensions.
       [br/]
       [br/]
-      The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right. 
+      The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right.
     [/div]
     [div className:"text"]
       ### Visualizing the Rest of the Dataset
-      To further visualize the global distribution of ResNet-34's CIFAR-10 image embeddings, 
-      we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot. 
+      To further visualize the global distribution of ResNet-34's CIFAR-10 image embeddings, we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot.
       [br/]
       [br/]
-      The hexbin map shows the [span className:"emphasize"]global distribution[/span] of the entire dataset, 
-      even when only a subset of the dataset is displayed. 
-      Each hexagon is colored according to the model's predicted class, 
-      and the size of the hexagon represents the frequency of instances being predicted as that class in that region. 
-      This way, the map shows the general trends in clustering based on model predictions, 
-      allowing quick identification of decision boundaries and similarly classified image groups. 
+      The hexbin map shows the [span className:"emphasize"]global distribution[/span] of the entire dataset, even when only a subset of the dataset is displayed. Each hexagon is colored according to the model's predicted class, and the size of the hexagon represents the frequency of instances being predicted as that class in that region. This way, the map shows the general trends in clustering based on model predictions, allowing quick identification of decision boundaries and similarly classified image groups.
     [/div]
 
     [div className:"text"]
       ### Exploring the Embedding Distribution
       [span className:"emphasize2"]
-      With the help of the hexbin backdrop, take a look at the spatiality of ResNet-34's embeddings projected by t-SNE. 
-      What can you learn about ResNet-34's perception of the natural CIFAR-10 dataset? 
+      With the help of the hexbin backdrop, take a look at the spatial distribution of ResNet-34's embeddings projected by t-SNE. What can you learn about ResNet-34's perception of the natural CIFAR-10 dataset?
       [br/]
       [/span]
     [/div]
@@ -213,16 +203,10 @@
     [conditional if:`showInsights`]
 
       [div className:"panel"]
-        From the projection, we can see that the CIFAR-10 embeddings of ResNet-34 form small, distinct class clusters.
-        When no attack has been conducted,
-        most of the confusion seems to happen within the center of the projection,
-        near the "boundaries" of the distinct clusters.
-        Overall, ResNet-34 achieves high accuracy. 
+        From the projection, we can see that the CIFAR-10 embeddings of ResNet-34 form small, distinct class clusters. When no attack has been conducted, most of the confusion seems to happen within the center of the projection, near the "boundaries" of the distinct clusters. Overall, ResNet-34 achieves high accuracy.
         [br/]
         [br/]
-        However, something that may catch your attention is that, 
-        although a closer distance between instances generally means that the model perceives them as "more similar," 
-        we can see that there are classes that we don't deem similar at all close to each other, e.g., birds and automobiles.
+        However, something that may catch your attention is that, although a closer distance between instances generally means that the model perceives them as "more similar," we can see that there are classes that we don't deem similar at all close to each other, e.g., birds and automobiles.
 
         [button onClick:`showInsights = false;`]
           Hide insights
