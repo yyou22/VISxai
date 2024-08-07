@@ -117,10 +117,7 @@
     [div className:"text"]
       ## DATASET & MODEL
       ### CIFAR-10 Dataset
-      On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span] in the scatterplot. 
-      The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), 
-      with 6,000 images per class. 
-      Here, we randomly sampled 10 images from each class. 
+      On the right, we have loaded 100 sampled images from the [span className:"emphasize"]CIFAR-10 dataset[/span] [cite reference:"krizhevsky2009learning"/] in the scatterplot. The CIFAR-10 dataset consists of 60,000 (32 × 32) colored images from [span className:"emphasize"]10 different classes[/span] (50,000 training data and 10,000 testing data), with 6,000 images per class. Here, we randomly sampled 10 images from each class.
       [br/]
       [br/]
       We use the following colors to represent these classes:
@@ -129,15 +126,14 @@
       [img src:"static/images/color legend.png" className:"img_" / ]
     [/figure]
     [div className:"text"]
-      Each circle from the scatterplot represents an instance from the dataset, and is splitted into two halves: 
-      the color of the left half represents its [span className:"emphasize"]ground truth label[/span], while the color of the right half represents the [span className:"emphasize"]model's prediction[/span] of the image. 
+      Each circle in the scatterplot represents an instance from the dataset and is split into two halves: the color of the left half represents its [span className:"emphasize"]ground truth label[/span], while the color of the right half represents the [span className:"emphasize"]model's prediction[/span] of the image.
     [/div]
     [figure]
       [img src:"static/images/circle_.png" className:"img_3" / ]
     [/figure]
     [div className:"text"]
       ### ResNet-34 Model
-      For this article, we will first use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perception of the CIFAR-10 datasdet by extracting its embeddings. 
+      For this article, we will use the [span className:"emphasize"]ResNet-34[/span] model and start by visualizing its perception of the CIFAR-10 dataset by extracting its embeddings.
       [br/]
       [var name:"showResNet" value:false /]
 
@@ -148,11 +144,7 @@
       [/conditional]
 
       [conditional if:`showResNet`]
-        ResNet-34 is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, 
-        which utilizes [span className:"emphasize"]residual learning[/span]. 
-        Residual learning helps the network to learn residual functions with reference to the layer inputs, 
-        which addresses the vanishing gradient problem and allows the training of much deeper networks.
-        This architecture consists of 34 layers, and it is widely adopted for its strong performance in image classification. 
+        ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. Residual learning helps the network to learn residual functions with reference to the layer inputs, addressing the vanishing gradient problem and allowing the training of much deeper networks. This architecture consists of 34 layers and is widely adopted for its strong performance in image classification.
         [br/]
         [br/]
         [button onClick:`showResNet = false;`]
@@ -162,13 +154,12 @@
       [/conditional]
 
       [br/]
-      To extract ResNet-34's perception of the images, 
-      we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
+      To extract ResNet-34's perception of the images, we temporarily detach the final output layer to obtain the [span className:"emphasize"]embeddings[/span], which are high-dimensional representations capturing the essential features of the input images.
     [/div]
     [div className:"text"]
       ### Exploring the Data Points
       [span className:"emphasize2"]
-      Start exploring the data points by hovering over them and observing their ground truth labels and ResNet-34's predictions of them.
+      Start exploring the data points by hovering over them and observing their ground truth labels and ResNet-34's predictions.
       [/span]
     [/div]
   [/Step]
