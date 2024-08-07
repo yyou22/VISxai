@@ -8,6 +8,7 @@
     "css": "styles.css"
   },
   "dependencies": {
+    "bibtex-parser": "0.0.0",
     "d3": "^5.16.0",
     "d3-hexbin": "^0.2.2",
     "idyll": "^3.0.0",

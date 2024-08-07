@@ -55,22 +55,18 @@
   [Step state:"beginning"]
     [div className:"text"]
       ## FROM THE BEGINNING
-      Before we use visualizations to understand the impacts of adversarial attacks on CNNs (yes, those are soon-to-be data points you see floating on the right), let's first go through the basics of adversarial attacks.
+      Before we use visualizations to understand the impacts of adversarial attacks on CNNs (yes, those are the soon-to-be data points you see floating on the right), let's first go through the basics of adversarial attacks.
     [/div]
     [div className:"text"]
       ### What is an Adversarial Attack?
-      In 2014, Goodfellow et al. showed that an adversarial image of a [span className:"emphasize"]panda[/span] could fool GoogLeNet into classifying it as [span className:"emphasize"]gibbon[/span] with high confidence, 
-      leading to the birth of AML research. 
-      An adversarial [span className:"emphasize"]"evasion" attack[/span] produces adversarial examples that are crafted with small, indistinguishable perturbations with the goal to result in model prediction errors, such as image misclassifications. 
+      In 2014, Goodfellow et al. [cite reference:"goodfellow2014explaining"/] showed that an adversarial image of a [span className:"emphasize"]panda[/span] could fool GoogLeNet into classifying it as a [span className:"emphasize"]gibbon[/span] with high confidence, leading to the birth of AML research. An adversarial [span className:"emphasize"]"evasion" attack[/span] produces adversarial examples that are crafted with small, indistinguishable perturbations with the goal of causing model prediction errors, such as image misclassifications. 
     [/div]
     [figure]
       [img src:"static/images/tut1.png" className:"img_" /]
     [/figure]
     [div className:"text"]
       ### What is the FGSM Attack?
-      The panda attack you just saw is called the [span className:"emphasize"]Fast Gradient Sign Method (FGSM)[/span] attack, 
-      one of the first and most known adversarial attacks. 
-      It is a [span className:"emphasize"]white-box attack[/span] (i.e., the attacker has access to model internals) that adjusts the input image by taking a step towards the sign of the backpropagated gradients. 
+      The panda attack you just saw is called the [span className:"emphasize"]Fast Gradient Sign Method (FGSM)[/span] attack, one of the first and most well-known adversarial attacks. It is a [span className:"emphasize"]white-box attack[/span] (i.e., the attacker has access to model internals) that adjusts the input image by taking a step in the direction of the sign of the backpropagated gradients.
     [/div]
       [figure]
       [img src:"static/images/tut2.png" className:"img_" /]
@@ -107,11 +103,11 @@
 
     [div className:"text"]
         ### How does the CNN see a gibbon then?
-        While the attack logic is simple and intuitive, how come two panda images that appear indistinguishable to humans can seem so different to machine learning models? 
+        While the attack logic is simple and intuitive, how can two panda images that appear indistinguishable to humans seem so different to machine learning models? 
         [br/]
         [br/]
         [span className:"emphasize2"]
-        Let's take a look at how the FGSM attack alters a CNN's perception of image datasets.
+        Let's examine how the FGSM attack alters a CNN's perception of image datasets.
         [/span]
       [/div]
 
@@ -569,6 +565,11 @@
       [br/]
       Understanding adversarial attacks and defenses is important for developing robust AI systems. By integrating advanced training techniques, we can build models that are both accurate and robust to adversarial manipulations, ensuring their reliability in real-world applications.
     [/div]
+
+  [/Step]
+
+  [Step state:"references"]
+    [References /]
   [/Step]
 
 [/Scroller]

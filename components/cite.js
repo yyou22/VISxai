@@ -4,7 +4,8 @@ const cite = require('./references').cite;
 class Cite extends React.Component {
 
   renderReference(id) {
-    return <a key={id} href={`#reference-${id}`}>{id}</a>;
+    //return <a key={id} href={`#reference-${id}`}>{id}</a>;
+    return <a key={id} >{id}</a>;
   }
 
   renderInner() {
