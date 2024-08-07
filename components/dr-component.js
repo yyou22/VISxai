@@ -565,6 +565,7 @@ class DRComponent extends D3Component {
                         //console.log('moveInCircles()');
 
                         var s = d3.select('.circle_container').selectAll('.circle_group');
+
                         s.each(function(d) {
                             d.angle += 0.05; // Adjust speed of the circular movement
                             const transform = d3.select(this).attr("transform");
@@ -874,13 +875,40 @@ class DRComponent extends D3Component {
                 
                 case "summary":
 
+                    function moveInCircles() {
+
+                        //console.log('moveInCircles()');
+
+                        var s = d3.select('.circle_container').selectAll('.circle_group');
+
+                        s.each(function(d) {
+                            d.angle += 0.05; // Adjust speed of the circular movement
+                            const transform = d3.select(this).attr("transform");
+                            const match = /translate\(([^,]+),([^,]+)\)/.exec(transform);
+                            if (match) {
+                                const centerX = parseFloat(match[1]);
+                                const centerY = parseFloat(match[2]);
+                                const x = centerX + d.radius * Math.cos(d.angle);
+                                const y = centerY + d.radius * Math.sin(d.angle);
+                                d3.select(this).transition()
+                                    .duration(20)
+                                    .attr("transform", "translate(" + x + "," + y + ")");
+                            }
+                        });
+                    }
+
+                    var s = d3.select('.circle_container').selectAll('.circle_group');
+                    s.each(function(d) {
+                        d.angle = Math.random() * 2 * Math.PI;
+                        d.radius = 0.5 + Math.random(); // Random radius between 0.5 and 1.5
+                    });
+
                     d3.select('.hexbin_container')
                         .transition()
                         .duration(500)
-                        .style('opacity', 0)
-                        .on('end', function(d, i) {
-                            //intervalIDs.push(setInterval(moveInCircles, 20));
-                        });
+                        .style('opacity', 0);
+                    
+                    intervalIDs.push(setInterval(moveInCircles, 20));
 
                     break;
 
