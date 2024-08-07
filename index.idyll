@@ -222,11 +222,10 @@
     [div className:"text"]
       ## CONDUCTING THE ATTACK
       ### Applying Perturbations
-      Previously, we introduced the FGSM attack, which generates [span className:"emphasize"]perturbations[/span] to craft adversarial examples. 
-      Perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions.  
+      Previously, we introduced the FGSM attack [cite reference:"goodfellow2014explaining"/], which generates [span className:"emphasize"]perturbations[/span] to craft adversarial examples. Perturbation refers to small, often imperceptible changes made to input data with the intent to mislead models into making incorrect predictions.
       [br/]
       [br/]
-      Here, we utilize FGSM attack with [Equation]L^{\infty}[/Equation] norm to generate adversarial examples. 
+      Here, we utilize the FGSM attack with the [Equation]L^{\infty}[/Equation] norm to generate adversarial examples.
     [/div]
 
     [var name:"showLInfinity" value:false /]
@@ -251,7 +250,7 @@
         ||\mathbf{n}||_{\infty} = \max_{i} |n_i|.
         [/Equation]
 
-        Use the slider to adjust [Equation]\epsilon[/Equation] and observe the changes of ResNet-34's embeddings. 
+        (Use the slider below to adjust [Equation]\epsilon[/Equation] and observe the changes in ResNet-34's embeddings.)
 
         [button onClick:`showLInfinity = false;`]
           Hide technical details
@@ -280,9 +279,7 @@
 
     [div className:"text"]
       ### Accuracy vs. Robustness
-      In AML, 
-      [span className:"emphasize"]accuracy (or natural accuracy)[/span] is the model's performance on clean data, 
-      while [span className:"emphasize"]robustness (or robust accuracy)[/span] measures its performance on adversarially perturbed data. 
+      In AML, [span className:"emphasize"]accuracy (or natural accuracy)[/span] refers to the model's performance on clean data, while [span className:"emphasize"]robustness (or robust accuracy)[/span] measures its performance on adversarially perturbed data. 
       Check the bar chart below to see how accuracy on the entire dataset drops after applying perturbations.
     [/div]
 
@@ -293,8 +290,7 @@
     [div className:"text"]
       ### Exploring Dataset-level Attack Impact
       [span className:"emphasize2"]
-      Adjust the slider and observe the changes in model embeddings and prediction accuracy. 
-      What interesting insights can you find?
+      Adjust the slider and observe the changes in model embeddings and prediction accuracy. What interesting insights can you find?
       [/span]
     [/div]
 
@@ -310,14 +306,10 @@
     [conditional if:`showInsights2`]
 
       [div className:"panel"]
-        When the perturbation size is set to values above 0,
-        the data points within the scatterplot start to travel rapidly, mostly towards the center of the plot.
-        This suggests that the FGSM attack has drastically altered ResNet-34's perception of these images' features.
+        When the perturbation size is set to values above 0, the data points within the scatterplot start to move rapidly, mostly towards the center of the plot. This suggests that the FGSM attack has drastically altered ResNet-34's perception of these images' features.
         [br/]
         [br/]
-        As the perturbation size increases,
-        ResNet-34's prediction accuracy keeps dropping,
-        eventually reaching 57% at a perturbation size of 0.03.
+        As the perturbation size increases, ResNet-34's prediction accuracy continues to drop, eventually reaching 57% at a perturbation size of 0.03.
         [br/]
         [br/]
         [button onClick:`showInsights2 = false;`]
@@ -330,8 +322,7 @@
 
     [div className:"text"]
       ### Is It Imperceptible?
-      To investigate specific images before and after the attack, 
-      [span className:"emphasize2"]adjust the perturbation slider, then click on a data point[/span] and observe the natural and adversarial images below. 
+      To investigate specific images before and after the attack, [span className:"emphasize2"]adjust the perturbation slider, then click on a data point[/span] and observe the natural and adversarial images below.
       [br/]
     [/div]
     [InstanceComponent
@@ -355,11 +346,7 @@
     [conditional if:`showInsights3`]
 
       [div className:"panel"]
-        The larger the perturbation size, 
-        the more obvious the perturbations are and the more effective the attack is.
-        That's why attackers aim to find a middle point where the perturbations are subtle yet sufficient to lead to a misclassification.
-        However, keep in mind that the CIFAR-10 dataset consists of 32 × 32 images, 
-        so the applied noise is relatively more apparent compared to high-resolution images (e.g., the panda image).
+        The larger the perturbation size, the more obvious the perturbations are and the more effective the attack is. That's why attackers aim to find a middle point where the perturbations are subtle yet sufficient to lead to a misclassification. However, keep in mind that the CIFAR-10 dataset consists of 32 × 32 images, so the applied noise is relatively more apparent compared to high-resolution images (e.g., the panda image).
         [br/]
         [br/]
         [button onClick:`showInsights3 = false;`]
