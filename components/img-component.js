@@ -10,12 +10,12 @@ class ImgComponent extends D3Component {
         const container = d3.select(node)
             .style('position', 'relative')
             .style('width', '600px')
-            .style('height', '240px')
+            .style('height', '270px') // Increased height to accommodate text below images
             .attr('class', 'instance_view');
 
         // Define dimensions
         const width = 600;
-        const height = 240;
+        const height = 300;
         const imageSize = 200; // Adjusted for two images side by side
 
         // Create a div for image container
@@ -24,10 +24,15 @@ class ImgComponent extends D3Component {
             .style('justify-content', 'space-around')
             .style('align-items', 'center')
             .style('width', '100%')
-            .style('height', '100%');
+            .style('height', '80%'); // Adjusted height to leave space for text
 
         // Append first image using <img> tag
-        imageContainer.append('img')
+        const firstImageDiv = imageContainer.append('div')
+            .style('display', 'flex')
+            .style('flex-direction', 'column')
+            .style('align-items', 'center');
+
+        firstImageDiv.append('img')
             .attr('class', 'noise_img')
             .attr('id', 'noise_img1')
             .attr('src', "static/images/question_.gif")
@@ -38,8 +43,20 @@ class ImgComponent extends D3Component {
             .style('border', '10px solid #a5a4a3')
             .style('outline', '2px solid #505050'); // Add a thin darker gray outline
 
+        firstImageDiv.append('div')
+            .style('margin-top', '10px')
+            .style('font-family', 'Arial, sans-serif')
+            .style('font-size', '16px')
+            .style('text-align', 'center')
+            .text('ResNet');
+
         // Append second image using <img> tag
-        imageContainer.append('img')
+        const secondImageDiv = imageContainer.append('div')
+            .style('display', 'flex')
+            .style('flex-direction', 'column')
+            .style('align-items', 'center');
+
+        secondImageDiv.append('img')
             .attr('class', 'noise_img')
             .attr('id', 'noise_img2')
             .attr('src', "static/images/question_.gif")
@@ -50,25 +67,22 @@ class ImgComponent extends D3Component {
             .style('border', '10px solid #a5a4a3')
             .style('outline', '2px solid #505050'); // Add a thin darker gray outline
 
+        secondImageDiv.append('div')
+            .style('margin-top', '10px')
+            .style('font-family', 'Arial, sans-serif')
+            .style('font-size', '16px')
+            .style('text-align', 'center')
+            .text('ResNet-34★');
+
         // Event listener for updating images
         eventEmitter.on('imageSelected', (imageId) => {
-            let perturb_file;
-
-            if (cur_perturb === 0) {
-                perturb_file = '000';
-            } else if (cur_perturb === 0.01) {
-                perturb_file = '001';
-            } else if (cur_perturb === 0.02) {
-                perturb_file = '002';
-            } else if (cur_perturb === 0.03) {
-                perturb_file = '003';
-            } else {
-                // Handle other values or default case if needed
-                perturb_file = '000';
-            }
 
             d3.select('#noise_img1')
-                    .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/001/${imageId}/noise.png`);
+                .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/001/${imageId}/noise.png`);
+
+            d3.select('#noise_img2')
+                .attr('src', `https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM_trades/001/${imageId}/noise.png`);
+
         });
     }
 
@@ -77,7 +91,6 @@ class ImgComponent extends D3Component {
         if (props.perturb !== this.props.perturb) {
             cur_perturb = props.perturb;
         }
-
     }
 }
 

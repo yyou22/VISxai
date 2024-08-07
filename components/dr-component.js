@@ -561,6 +561,9 @@ class DRComponent extends D3Component {
 
                     // Define moveInCircles within the introduction case
                     function moveInCircles() {
+
+                        //console.log('moveInCircles()');
+
                         var s = d3.select('.circle_container').selectAll('.circle_group');
                         s.each(function(d) {
                             d.angle += 0.05; // Adjust speed of the circular movement
@@ -816,6 +819,10 @@ class DRComponent extends D3Component {
 
                     cur_model = 'trades';
 
+                    if (this.props.state === 'summary') {
+                        stopAllMovements();
+                    }
+
                     d3.select('.hexbin_container')
                         .transition()
                         .duration(500)
@@ -864,6 +871,19 @@ class DRComponent extends D3Component {
 
 
                     break;
+                
+                case "summary":
+
+                    d3.select('.hexbin_container')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0)
+                        .on('end', function(d, i) {
+                            //intervalIDs.push(setInterval(moveInCircles, 20));
+                        });
+
+                    break;
+
 
             }
         }
