@@ -648,7 +648,10 @@ class DRComponent extends D3Component {
                                     if (cur_perturb === '000') {
                                         return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/img_data/" + d.ogi + "/img.png";
                                     }
-                                    return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/" + cur_perturb  + "/" + d.ogi + "/img.png";
+                                    if (cur_model == 'resnet') {
+                                        return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM/" + cur_perturb  + "/" + d.ogi + "/img.png";
+                                    }
+                                    return "https://raw.githubusercontent.com/yyou22/VISxAI24_imagebase/main/FGSM_trades/" + cur_perturb  + "/" + d.ogi + "/img.png";
                                 })
                         })
                         .on("mousemove", function(d, i) {
@@ -675,7 +678,7 @@ class DRComponent extends D3Component {
                                 originalPrediction: label_[d3.select(this).attr('pred')],
                                 currentPrediction: label_[d.pred],
                             });
-                            console.log(tableSuccess);
+                            //console.log(tableSuccess);
                         })
 
                     s.transition('opacity_change')
