@@ -85,26 +85,26 @@
 
       [div className:"text"]
         //The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss:
-        The idea of the attack is to manipulate the input data to maximize the model's error (i.e., loss), instead of minimizing it as we do during training.
-        In other words, the attack makes small changes to the input image, pushing the model to make a wrong prediction:
+        The idea is to manipulate the input data to maximize the loss, instead of minimizing it like we do during model training.
+        In other words, it makes small changes to the input image to push the model to make a wrong prediction:
         [br/]
         [Equation display:true]
         \mathbf{x}' = \mathbf{x} +\epsilon \textrm{\textrm{sign}}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y)). 
         [/Equation]
-        Let's break this down:
-        [br/]
       [/div]
       [div className:"panel"]
+        Specifically,
+        [br/]
 * [Equation]\mathbf{x}'[/Equation]: This is the adversarial image.
 * [Equation]\mathbf{x}[/Equation]: This is the original input image.
-* [Equation]J(\theta, \mathbf{x}, y)[/Equation]: This is the loss function, which measures how far the model's predictions are from the true label [Equation]y[/Equation]. It depends on the model's parameters [Equation]\theta[/Equation], the input image [Equation]\mathbf{x}[/Equation], and the true label [Equation]y[/Equation].
+* [Equation]J(\theta, \mathbf{x}, y)[/Equation]: This is the loss function that measures how far the model's predictions are from the true label [Equation]y[/Equation]. It depends on the model's parameters [Equation]\theta[/Equation], the input image [Equation]\mathbf{x}[/Equation], and the true label [Equation]y[/Equation].
 * [Equation]\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y)[/Equation]: This is the gradient of the loss function w.r.t the input image. It tells the attacker in which direction the input should be changed to increase the loss.
-* [Equation]\textrm{sign}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y))[/Equation]: This extracts the direction (positive or negative) of the gradient, indicating whether each pixel in the image should be increased or decreased to increase the loss.
-* [Equation]\epsilon[/Equation]: This controls how much the attacker changes the image. If [Equation]\epsilon[/Equation] is too large, the changes become noticeable to humans; if it's too small, the attack might not be effective.
+* [Equation]\textrm{sign}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y))[/Equation]: This extracts the direction (+ or -) of the gradient, indicating whether each pixel should be increased or decreased to result in model error.
+* [Equation]\epsilon[/Equation]: This controls the magnitude of the perturbation. If [Equation]\epsilon[/Equation] is too large, the changes become too noticeable to humans; if too small, the attack might not be effective.
       [/div]
       [div className:"text"]
-        In short, it creates an [span className:"emphasize"]adversarial image[/span] by adding a small amount of perturbation to the original image in the direction that increases the model's loss. 
-        This small [span className:"emphasize"]perturbation[/span] [Equation]\epsilon[/Equation] is enough to fool the model, even though the changes are so subtle that a human wouldn’t notice them.
+        In short, the FGSM attack creates an [span className:"emphasize"]adversarial image[/span] by adding a small amount of perturbation to the original image in the direction that increases the model's loss. 
+        This [span className:"emphasize"]perturbation[/span] [Equation]\epsilon[/Equation] is enough to fool machine learning models, but usually so subtle that a human wouldn’t really notice them.
       [/div]
       [figure]
         [img src:"static/images/tut3.png" className:"img_2" / ]
@@ -160,14 +160,14 @@
 
       [conditional if:`showResNet`]
         ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. 
-        In traditional DNNs, each layer learns a direct mapping from the input to the desired output.  
-        However, as networks deepen, training becomes harder from challenges like the *vanishing gradient problem*.
+        In older DNNs, each layer learns a full transformation from the input to the desired output.  
+        However, as networks become deeper, training becomes more challenging due to problems like the *vanishing gradient*.
         [br/]
         [br/]
-        Residual learning lets layers focus on the *residual* — the difference between the desired output and what earlier layers have produced. 
-        Instead of learning the full transformation, each layer learns what to add to the previous output. 
-        This is done through *skip connections*, which pass one layer’s output directly to later layers.
-        This architecture consists of 34 layers and is widely adopted for its strong performance in image classification.
+        Residual learning addresses this by focusing on the *residual* — the difference between the desired layer output and what earlier layers produced. 
+        This way, each layer only learns what to add to the previous output. 
+        This is done through *skip connections* that pass one layer’s output directly to later layers.
+        The architecture we selected consists of 34 layers and is widely adopted for its strong performance in image classification.
         [br/]
         [br/]
         [button onClick:`showResNet = false;`]
@@ -272,6 +272,14 @@
         [Equation display:true]
         ||\mathbf{n}||_{\infty} = \max_{i} |n_i|.
         [/Equation]
+
+        [div className:"panel"]
+* [Equation]\mathbf{n}[/Equation]: This represents the perturbation added to the original image. Every element in [Equation]\mathbf{n}[/Equation] corresponds to the value change in a specific pixel. 
+* [Equation]n_i[/Equation]: This is the change for a specific pixel, where [Equation]i[/Equation] indicates the pixel index.
+* [Equation]|n_i|[/Equation]: The absolute value of the change for pixel [Equation]i[/Equation].
+* [Equation]\max_i |n_i|[/Equation]: This is the maximum absolute value of the perturbations applied to the image. It means looking at all the pixel changes and identify the one that is the largest.
+* [Equation]||\mathbf{n}||_{\infty}[/Equation]: This is the notation for the [Equation]L^{\infty}[/Equation] norm.
+        [/div]
 
         (Use the slider below to adjust [Equation]\epsilon[/Equation] and observe the changes in ResNet-34's embeddings.)
 
@@ -393,7 +401,7 @@
       On the right, we have loaded the CIFAR-10 embeddings of this new ResNet-34 when no attack has been conducted. This ResNet-34★ shares the same model architecture as the previous ResNet-34 we just explored, but it has been specifically trained with [span className:"emphasize"]adversarial training (AT)[/span] [cite reference:"madry2017towards"/].
     [/div]
     [div className:"text"]
-      ### What is Adversarial Training?
+      ### What is Adversarial Training (AT)?
       To counter adversarial attacks, various defense methods have been proposed to fortify model robustness against adversarial inputs. Adversarial training is currently the most effective defense, which trains classifiers with adversarial examples by adding them to the training set or through regularizations.
       [br/]
       [br/]
@@ -411,14 +419,23 @@
         ### What is TRADES?
         TRADES[cite reference:"zhang2019theoretically"/] is an advanced AT method designed to enhance the robustness of neural networks against adversarial attacks. 
         It focuses on balancing the trade-off between accuracy on unperturbed data and robustness against adversarial examples by introducing a [span className:"emphasize"]surrogate loss[/span] function. 
-        This surrogate loss enalizes large deviations in predictions caused by small perturbations, ensuring that a model that can maintain relatively high natural accuracy while being resilient to adversarial manipulations. 
+        This surrogate loss penalizes large deviations in predictions caused by small perturbations, ensuring that a model that can maintain relatively high natural accuracy while being resilient to adversarial manipulations. 
         [br/]
         [br/]
         Specifically, TRADES uses the following optimization problem for the loss function: 
         [Equation display:true]
           \min_{f} \mathbb{E} \left\{ \mathcal{L}(f(X), Y) + \beta \max_{X' \in \mathsf{Ball}(X, \epsilon)} \mathcal{L}(f(X), f(X')) \right\} 
         [/Equation]
-        [br/]
+        [div className:"panel"]
+* [Equation]\min_f[/Equation] means we are finding the function [Equation]f[/Equation] that minimizes the overall loss.
+* [Equation]\mathbb{E}\{...\}[/Equation] represents the *expected value*, meaning that we are minimizing the average loss over all inputs from the dataset.
+* [Equation]L(f(X),Y)[/Equation] is the first part of the loss function; it represents the standard classification loss, which measures how well the model’s predictions on the clean data (i.e., [Equation]f(X)[/Equation]) match true labels [Equation]Y[/Equation]. 
+* [Equation]\beta[/Equation] controls the balance between the standard classification loss and the adversarial loss. A larger [Equation]\beta[/Equation] emphasizes on robustness, while a smaller [Equation]\beta[/Equation] prioritizes natural accuracy.
+* [Equation]\max_{X' \in \text{Ball}(X, \epsilon)} L(f(X),f(X'))[/Equation] is the second part of the loss; it looks for an adversarial example [Equation]X'[/Equation] within a perturbation [Equation]\epsilon[/Equation] of [Equation]X[/Equation]. It measures how different the model's predictions are for the clean and adversarial examples. The goal is to ensure that the predictions for [Equation]X[/Equation] and [Equation]X'[/Equation] are as close as possible.
+        [/div]
+        To summarize:
+1. The first part of TRADE's loss ensures the model performs well on clean data (i.e., [span className:"emphasize"]natural accuracy[/span]).
+2. The second part prevents the model from changing its prediction too much when the input is perturbed by an attack (i.e., [span className:"emphasize"]adversarial robustness[/span]).
         [button onClick:`showTRADES = false;`]
           Show less about TRADES
         [/button]
