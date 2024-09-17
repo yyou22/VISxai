@@ -1,4 +1,4 @@
-[meta title:"Intro to Adversarial Attacks" description:"A Beginner's Introduction to Adversarial Attacks" /]
+[meta title:"Intro to Adversarial Attacks by Yuzhe You and Jian Zhao" description:"A Beginner's Introduction to Adversarial Attacks" /]
 
 [var name:"perturbation_val" value:0 /]
 
@@ -47,7 +47,8 @@
         Though deep learning models have achieved remarkable success in diverse domains (e.g., facial recognition, autonomous driving), these models have been proven to be quite brittle to perturbations around the input data. 
         [span className:"emphasize"]Adversarial machine learning (AML)[/span] studies attacks that can fool machine learning models into generating incorrect outcomes as well as the defenses against worst-case attacks to strengthen model robustness. 
         Specifically, for image classification, it is challenging to understand [span className:"emphasize"]adversarial attacks[/span] due to their use of subtle perturbations that are not human-interpretable, as well as the variability of attack impacts influenced by attack methods, instance differences, or model architectures. 
-        This guide will utilize interactive visualizations to provide a non-expert introduction to adversarial attacks, and visualize the impact of FGSM attacks on two different ResNet-34 models.
+        This guide will utilize interactive visualizations to provide a non-expert introduction to adversarial attacks, and visualize the impact of FGSM attacks on two different ResNet-34 models. 
+        We designed this guide for beginners who are familiar with basic machine learning but new to advanced AML topics like adversarial attacks.
  
     [/div]
   [/Step]
@@ -65,7 +66,7 @@
       [img src:"static/images/tut1.png" className:"img_" /]
     [/figure]
     [div className:"text"]
-      ### What is the FGSM Attack?
+      ### What is an FGSM Attack?
       The panda attack you just saw is called the [span className:"emphasize"]Fast Gradient Sign Method (FGSM)[/span] attack, one of the first and most well-known adversarial attacks. It is a [span className:"emphasize"]white-box attack[/span] (i.e., the attacker has access to model internals) that adjusts the input image by taking a step in the direction of the sign of the backpropagated gradients.
     [/div]
       [figure]
@@ -83,13 +84,27 @@
     [conditional if:`showFGSM`]
 
       [div className:"text"]
-        The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss:
+        //The idea is that rather than working to minimize the loss like in model training, the FGSM attack adjusts the input data to maximize the loss:
+        The idea of the attack is to manipulate the input data to maximize the model's error (i.e., loss), instead of minimizing it as we do during training.
+        In other words, the attack makes small changes to the input image, pushing the model to make a wrong prediction:
         [br/]
         [Equation display:true]
         \mathbf{x}' = \mathbf{x} +\epsilon \textrm{\textrm{sign}}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y)). 
         [/Equation]
-        Here, it modifies image [Equation]\mathbf{x}[/Equation] by maximizing the loss [Equation]J(\theta, \mathbf{x}, y)[/Equation] towards the gradients' sign to produce the adversarial image [Equation]\mathbf{x}[/Equation], 
-        where [Equation]y[/Equation] is the true label, [Equation]\theta[/Equation] is model parameters, and [Equation]\epsilon[/Equation] scales the perturbation. 
+        Let's break this down:
+        [br/]
+      [/div]
+      [div className:"panel"]
+* [Equation]\mathbf{x}'[/Equation]: This is the adversarial image.
+* [Equation]\mathbf{x}[/Equation]: This is the original input image.
+* [Equation]J(\theta, \mathbf{x}, y)[/Equation]: This is the loss function, which measures how far the model's predictions are from the true label [Equation]y[/Equation]. It depends on the model's parameters [Equation]\theta[/Equation], the input image [Equation]\mathbf{x}[/Equation], and the true label [Equation]y[/Equation].
+* [Equation]\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y)[/Equation]: This is the gradient of the loss function w.r.t the input image. It tells the attacker in which direction the input should be changed to increase the loss.
+* [Equation]\textrm{sign}(\nabla_{\mathbf{x}} J(\theta, \mathbf{x}, y))[/Equation]: This extracts the direction (positive or negative) of the gradient, indicating whether each pixel in the image should be increased or decreased to increase the loss.
+* [Equation]\epsilon[/Equation]: This controls how much the attacker changes the image. If [Equation]\epsilon[/Equation] is too large, the changes become noticeable to humans; if it's too small, the attack might not be effective.
+      [/div]
+      [div className:"text"]
+        In short, it creates an [span className:"emphasize"]adversarial image[/span] by adding a small amount of perturbation to the original image in the direction that increases the model's loss. 
+        This small [span className:"emphasize"]perturbation[/span] [Equation]\epsilon[/Equation] is enough to fool the model, even though the changes are so subtle that a human wouldn’t notice them.
       [/div]
       [figure]
         [img src:"static/images/tut3.png" className:"img_2" / ]
@@ -144,7 +159,15 @@
       [/conditional]
 
       [conditional if:`showResNet`]
-        ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. Residual learning helps the network to learn residual functions with reference to the layer inputs, addressing the vanishing gradient problem and allowing the training of much deeper networks. This architecture consists of 34 layers and is widely adopted for its strong performance in image classification.
+        ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. 
+        In traditional DNNs, each layer learns a direct mapping from the input to the desired output.  
+        However, as networks deepen, training becomes harder from challenges like the *vanishing gradient problem*.
+        [br/]
+        [br/]
+        Residual learning lets layers focus on the *residual* — the difference between the desired output and what earlier layers have produced. 
+        Instead of learning the full transformation, each layer learns what to add to the previous output. 
+        This is done through *skip connections*, which pass one layer’s output directly to later layers.
+        This architecture consists of 34 layers and is widely adopted for its strong performance in image classification.
         [br/]
         [br/]
         [button onClick:`showResNet = false;`]

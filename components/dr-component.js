@@ -344,9 +344,9 @@ class DRComponent extends D3Component {
             .range([50  * this.width / 500, this.width-50  * this.width / 500])
 
         //FIXME
-        window.onbeforeunload = function () {
+        /*window.onbeforeunload = function () {
             window.scrollTo(0, 0);
-        }
+        }*/
 
         /*window.addEventListener('click' , (e) => {
             const target = e.target//.className; 
