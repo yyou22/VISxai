@@ -1,4 +1,4 @@
-[meta title:"Intro to Adversarial Attacks by Yuzhe You and Jian Zhao" description:"A Beginner's Introduction to Adversarial Attacks" /]
+[meta title:"A Beginner's Introduction to Adversarial Attacks by Yuzhe You and Jian Zhao" description:"A Beginner's Introduction to Adversarial Attacks" /]
 
 [var name:"perturbation_val" value:0 /]
 
@@ -160,7 +160,7 @@
 
       [conditional if:`showResNet`]
         ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. 
-        In older DNNs, each layer learns a full transformation from the input to the desired output.  
+        In traditional DNNs, each layer learns a full transformation from the input to the desired output.  
         However, as networks become deeper, training becomes more challenging due to problems like the *vanishing gradient*.
         [br/]
         [br/]
@@ -198,13 +198,57 @@
       [br/]
       [br/]
       The resulting outputs are scaled to be used as the x- and y-coordinates of the instances in the scatterplot shown on the right.
+      [br/]
+      [br/]
+      [span className:"emphasize2"]
+        Note: although t-SNE is a powerful tool and often produces visually impressive results [cite reference:"espadoto2019toward"/][cite reference:"atzberger2023large"/], it does come with certain limitations and must be used cautiously.
+      [/span]
     [/div]
+
+    [var name:"showLimitation" value:false /]
+
+    [conditional if:`!showLimitation`]
+      [button onClick:`showLimitation = true;`]
+        Show t-SNE's Limitations
+      [/button]
+    [/conditional]
+
+    [conditional if:`showLimitation`]
+
+      [div className:"panel"]
+* **Sensitivity to initialization** [cite reference:"kobak2021initialization"/]: t-SNE's produced results can vary based on its initial conditions, which means that different runs could potentially produce different results. In our case, we average the results from multiple runs to create a more stable and reliable representation.
+* **Local linearity assumption** [cite reference:"vd2008visualizing"/]: t-SNE relies on the assumption of local linearity, which may not always hold true. This may lead to distortions in how global data structures are represented in the 2-D space. 
+* **Limited clustering capabilities** [cite reference:"arora2018analysis"/]: t-SNE may only partially recover clusters under special circumstances. Visualized clusters should be interpreted cautiously, as they may not directly correspond to clusters in the original high-dimensional space.
+* **Class-cluster assumption** [cite reference:"jeon2023classes"/]: One should not assume that classes in high-dimensional data will always manifest as distinct clusters in t-SNE's representation. The aglorithm highights local structures but may be misleading when interpreting global patterns.
+        Given these caveats, it is important to use t-SNE cautiously in less well-studied use cases. 
+        [br/]
+        [br/]
+        [button onClick:`showLimitation = false;`]
+          Hide t-SNE's Limitations
+        [/button]
+
+      [/div]
+
+    [/conditional]
+
     [div className:"text"]
       ### Visualizing the Rest of the Dataset
-      To further visualize the global distribution of ResNet-34's CIFAR-10 image embeddings, we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot.
+      To further visualize the global distribution of ResNet-34's embeddings on the entire CIFAR-10 dataset (with 10,000 images), 
+      we also include a [span className:"emphasize"]hexagonal binning[/span] backdrop in our scatterplot. 
+      This helps provide context even when only a subset of the dataset is actively displayed.
       [br/]
       [br/]
-      The hexbin map shows the [span className:"emphasize"]global distribution[/span] of the entire dataset, even when only a subset of the dataset is displayed. Each hexagon is colored according to the model's predicted class, and the size of the hexagon represents the frequency of instances being predicted as that class in that region. This way, the map shows the general trends in clustering based on model predictions, allowing quick identification of decision boundaries and similarly classified image groups.
+      The hexbin map shows the [span className:"emphasize"]global distribution[/span] of the entire dataset, 
+      regardless of how many data points are visible in the foreground.  
+      Each hexagon is colored according to the model's predicted class, 
+      and the size of the hexagon represents the frequency of instances being predicted as that class in that region. 
+      We use hexbins instead of circles here because using circles for all data points would lead to significant visual clutter, 
+      making the scatterplot harder to interpret. 
+      [br/]
+      [br/]
+      By employing hexagons, we can aggregate the data into manageable regions, reducing visual noise and providing a clearer view of the overall distribution.
+      This way, the map shows the general trends in clustering based on model predictions, 
+      allowing for quick identification of decision boundaries and similarly classified image groups.
     [/div]
 
     [div className:"text"]
@@ -275,8 +319,7 @@
 
         [div className:"panel"]
 * [Equation]\mathbf{n}[/Equation]: This represents the perturbation added to the original image. Every element in [Equation]\mathbf{n}[/Equation] corresponds to the value change in a specific pixel. 
-* [Equation]n_i[/Equation]: This is the change for a specific pixel, where [Equation]i[/Equation] indicates the pixel index.
-* [Equation]|n_i|[/Equation]: The absolute value of the change for pixel [Equation]i[/Equation].
+* [Equation]|n_i|[/Equation]: The absolute value of the change for pixel [Equation]i[/Equation], where [Equation]i[/Equation] indicates the pixel index.
 * [Equation]\max_i |n_i|[/Equation]: This is the maximum absolute value of the perturbations applied to the image. It means looking at all the pixel changes and identify the one that is the largest.
 * [Equation]||\mathbf{n}||_{\infty}[/Equation]: This is the notation for the [Equation]L^{\infty}[/Equation] norm.
         [/div]
@@ -353,7 +396,7 @@
 
     [div className:"text"]
       ### Is It Imperceptible?
-      To investigate specific images before and after the attack, [span className:"emphasize2"]adjust the perturbation slider, then click on a data point[/span] and observe the natural and adversarial images below.
+      To investigate specific images before and after the attack, [span className:"emphasize2"]adjust the perturbation slider above, then click on a data point in the embeddings[/span] and observe the natural and adversarial images below.
       [br/]
     [/div]
     [InstanceComponent
@@ -430,7 +473,7 @@
 * [Equation]\min_f[/Equation] means we are finding the function [Equation]f[/Equation] that minimizes the overall loss.
 * [Equation]\mathbb{E}\{...\}[/Equation] represents the *expected value*, meaning that we are minimizing the average loss over all inputs from the dataset.
 * [Equation]L(f(X),Y)[/Equation] is the first part of the loss function; it represents the standard classification loss, which measures how well the model’s predictions on the clean data (i.e., [Equation]f(X)[/Equation]) match true labels [Equation]Y[/Equation]. 
-* [Equation]\beta[/Equation] controls the balance between the standard classification loss and the adversarial loss. A larger [Equation]\beta[/Equation] emphasizes on robustness, while a smaller [Equation]\beta[/Equation] prioritizes natural accuracy.
+* [Equation]\beta[/Equation] balances between the standard classification loss and the adversarial loss. A larger [Equation]\beta[/Equation] emphasizes on robustness, while a smaller [Equation]\beta[/Equation] prioritizes natural accuracy.
 * [Equation]\max_{X' \in \text{Ball}(X, \epsilon)} L(f(X),f(X'))[/Equation] is the second part of the loss; it looks for an adversarial example [Equation]X'[/Equation] within a perturbation [Equation]\epsilon[/Equation] of [Equation]X[/Equation]. It measures how different the model's predictions are for the clean and adversarial examples. The goal is to ensure that the predictions for [Equation]X[/Equation] and [Equation]X'[/Equation] are as close as possible.
         [/div]
         To summarize:
@@ -555,7 +598,19 @@
       4. [span className:"emphasize"]Model Comparisons[/span]: ResNet-34★, trained with TRADES, demonstrated higher robustness to FGSM attacks compared to the naturally trained ResNet-34.
       [br/]
       [br/]
-      Understanding adversarial attacks and defenses is important for developing robust AI systems. By integrating advanced training techniques, we can build models that are both accurate and robust to adversarial manipulations, ensuring their reliability in real-world applications.
+      Understanding adversarial attacks and defenses is important for developing robust AI systems. 
+      By integrating advanced training techniques, 
+      we can build models that are both accurate and robust to adversarial manipulations, 
+      ensuring their reliability in real-world applications.
+
+      ### Learn More About Adversarial Attacks
+
+      If you are interested in exploring adversarial attacks and related topics further, here are some other online resources:
+1. **TensorFlow Tutorial** - *Adversarial Attacks Using FGSM* ([link](https://www.tensorflow.org/tutorials/generative/adversarial_fgsm))
+2. **Pytorch Tutorial** - *Adversarial Example Generation* ([link](https://pytorch.org/tutorials/beginner/fgsm_tutorial.html))
+3. **SEI Blog (Carnegie Mellon University)** - *The Challenge of Adversarial Machine Learning* ([link](https://insights.sei.cmu.edu/blog/the-challenge-of-adversarial-machine-learning/))
+4. **AdVis.js** - *Exploring Fast Gradient Sign Method* ([link](https://jlin.xyz/advis/))
+5. **Bluff** - *Interactively Deciphering Adversarial Attacks on Deep Neural Networks* ([link](https://poloclub.github.io/bluff/))
     [/div]
 
   [/Step]
