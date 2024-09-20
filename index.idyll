@@ -317,12 +317,15 @@
         ||\mathbf{n}||_{\infty} = \max_{i} |n_i|.
         [/Equation]
 
-        [div className:"panel"]
+      [/div]
+      
+      [div className:"panel"]
 * [Equation]\mathbf{n}[/Equation]: This represents the perturbation added to the original image. Every element in [Equation]\mathbf{n}[/Equation] corresponds to the value change in a specific pixel. 
 * [Equation]|n_i|[/Equation]: The absolute value of the change for pixel [Equation]i[/Equation], where [Equation]i[/Equation] indicates the pixel index.
 * [Equation]\max_i |n_i|[/Equation]: This is the maximum absolute value of the perturbations applied to the image. It means looking at all the pixel changes and identify the one that is the largest.
 * [Equation]||\mathbf{n}||_{\infty}[/Equation]: This is the notation for the [Equation]L^{\infty}[/Equation] norm.
-        [/div]
+      [/div]
+      [div className:"text"]
 
         (Use the slider below to adjust [Equation]\epsilon[/Equation] and observe the changes in ResNet-34's embeddings.)
 
@@ -457,8 +460,11 @@
           Show more about TRADES
         [/button]
       [/conditional]
+    [/div]
 
       [conditional if:`showTRADES`]
+
+        [div className:"text"]
         ### What is TRADES?
         TRADES[cite reference:"zhang2019theoretically"/] is an advanced AT method designed to enhance the robustness of neural networks against adversarial attacks. 
         It focuses on balancing the trade-off between accuracy on unperturbed data and robustness against adversarial examples by introducing a [span className:"emphasize"]surrogate loss[/span] function. 
@@ -469,6 +475,8 @@
         [Equation display:true]
           \min_{f} \mathbb{E} \left\{ \mathcal{L}(f(X), Y) + \beta \max_{X' \in \mathsf{Ball}(X, \epsilon)} \mathcal{L}(f(X), f(X')) \right\} 
         [/Equation]
+        [/div]
+
         [div className:"panel"]
 * [Equation]\min_f[/Equation] means we are finding the function [Equation]f[/Equation] that minimizes the overall loss.
 * [Equation]\mathbb{E}\{...\}[/Equation] represents the *expected value*, meaning that we are minimizing the average loss over all inputs from the dataset.
@@ -476,16 +484,18 @@
 * [Equation]\beta[/Equation] balances between the standard classification loss and the adversarial loss. A larger [Equation]\beta[/Equation] emphasizes on robustness, while a smaller [Equation]\beta[/Equation] prioritizes natural accuracy.
 * [Equation]\max_{X' \in \text{Ball}(X, \epsilon)} L(f(X),f(X'))[/Equation] is the second part of the loss; it looks for an adversarial example [Equation]X'[/Equation] within a perturbation [Equation]\epsilon[/Equation] of [Equation]X[/Equation]. It measures how different the model's predictions are for the clean and adversarial examples. The goal is to ensure that the predictions for [Equation]X[/Equation] and [Equation]X'[/Equation] are as close as possible.
         [/div]
+
+        [div className:"panel"]
         To summarize:
 1. The first part of TRADE's loss ensures the model performs well on clean data (i.e., [span className:"emphasize"]natural accuracy[/span]).
 2. The second part prevents the model from changing its prediction too much when the input is perturbed by an attack (i.e., [span className:"emphasize"]adversarial robustness[/span]).
         [button onClick:`showTRADES = false;`]
           Show less about TRADES
         [/button]
+        [/div]
 
       [/conditional]
 
-    [/div]
 
     [div className:"text"]
       ### Applying Perturbations Again

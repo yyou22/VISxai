@@ -153,6 +153,7 @@ function getRndInteger(min, max) {
 }
 
 function animateOnceWithIncreasingDelay(g) {
+
     g.each(function(d, i) {
         if (i % 3 === 0) {  // Apply animation only to every third element
             const element = d3.select(this);
@@ -507,6 +508,7 @@ class DRComponent extends D3Component {
         var s = canvas.select('.circle_container').selectAll('.circle_group');
         
         if (props.state !== this.props.state) {
+            console.log(props.state); //FIXME
             switch (props.state) {
                 case 'abstract':
 
@@ -523,13 +525,17 @@ class DRComponent extends D3Component {
                         })
                         .attr('opacity', 0);
 
-
                     d3.select('.panda_img')
                         .transition()
                         .ease(d3.easeCubicOut)
                         .duration(2000)
                         .style('opacity', 1)
                         .style('filter', 'blur(0px)');
+
+                    //cursor
+                    d3.select('.cursor')
+                        .style('opacity', 0)
+                        .style('visibility', 'hidden');
 
                     break;
                 case 'beginning':
@@ -610,6 +616,16 @@ class DRComponent extends D3Component {
                         .on("mouseover", null)
                         .on('mousemove', null)
                         .on("mouseout", null);
+
+                    //force cursor
+                    d3.select('.cursor')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0)
+                        .on('end', function() {
+                            d3.select('.cursor')
+                                .style('visibility', 'hidden');
+                        });
 
                     //intervalIDs.push(setInterval(moveInCircles, 20));
                     break;
@@ -717,7 +733,7 @@ class DRComponent extends D3Component {
                 case "data points":
 
                     stopAllMovements();
-                    stopAnimation();
+                    //stopAnimation(); //FIXME
 
                     canvas.select('#cur_contour0')
                         .transition()
@@ -731,6 +747,16 @@ class DRComponent extends D3Component {
                         .transition()
                         .duration(1500)
                         .style("opacity", 0)
+
+                    s.select('.dot')
+                        .style("fill", function(d) {
+                            return map_[d.target];
+                        });
+
+                    s.select('.arc')
+                        .style("fill", function(d) {
+                            return map_[d.pred];
+                        });
 
                     d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
                         if (+d.vis == 1) {
@@ -757,8 +783,10 @@ class DRComponent extends D3Component {
                             .attr("transform", function(d) {
                                 return "translate(" + x2(d.xt) + "," + y2(d.yt) + ")";
                             })
-                            .on('end', function() {
-                                animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+                            .on('end', function(d, i) {
+                                if (i != s.size() -1) {
+                                    animateOnceWithIncreasingDelay(d3.selectAll('.circle_group'));
+                                }
                             })
 
                     });
@@ -807,6 +835,15 @@ class DRComponent extends D3Component {
                             .data(data)
                             .enter()
                             .attr('pred', function(d) { return d.pred; });
+
+                        s.select('.dot')
+                            .style("fill", function(d) {
+                                return map_[d.target];
+                            });
+                        s.select('.arc')
+                            .style("fill", function(d) {
+                                return map_[d.pred];
+                            });
 
                         s.transition()
                             .ease(d3.easeCubicOut)
@@ -864,6 +901,19 @@ class DRComponent extends D3Component {
                             .enter()
                             .attr('pred', function(d) { return d.pred; });
 
+                        //force data point colors
+                        s.attr('opacity', 1);
+                        s.select('.dot')
+                            .style("fill", function(d) {
+                                return map_[d.target];
+                            })
+                            .attr('r', 7 / k * width / 500);
+                        s.select('.arc')
+                            .style("fill", function(d) {
+                                return map_[d.pred];
+                            })
+                            .attr('d', drawArc(6.3 * width / 500, k));
+
                         s.transition()
                             .ease(d3.easeCubicOut)
                             .duration(1500)
@@ -877,6 +927,10 @@ class DRComponent extends D3Component {
                     break;
                 
                 case "summary":
+
+                    if (this.props.state === 'references') {
+                        break;
+                    }
 
                     function moveInCircles() {
 
@@ -910,11 +964,57 @@ class DRComponent extends D3Component {
                         .transition()
                         .duration(500)
                         .style('opacity', 0);
+
+                    s.each(function(d, i) {
+                        // Get the current position
+                        const currentTransform = d3.select(this).attr("transform");
+                        
+                        // Parse the current transform string to extract the x and y values
+                        const translateRegex = /translate\(([^,]+),([^\)]+)\)/;
+                        const match = currentTransform.match(translateRegex);
+                        
+                        // Get current x and y values if transform exists, otherwise set to undefined
+                        const currentX = match ? parseFloat(match[1]) : undefined;
+                        const currentY = match ? parseFloat(match[2]) : undefined;
                     
-                    intervalIDs.push(setInterval(moveInCircles, 20));
+                        // Calculate the target x and y values
+                        const targetX = x2(d.xt);
+                        const targetY = y2(d.yt);
+                        
+                        /*
+                        if (i == s.size() - 1) {
+                            console.log(currentX);
+                            console.log(targetX);
+                        }*/
+                    
+                        const tolerance = 1;  // You can adjust this value as needed
+
+                        if (Math.abs(currentX - targetX) > tolerance || Math.abs(currentY - targetY) > tolerance) {
+                            d3.select(this).interrupt()
+                                .transition()
+                                .ease(d3.easeCubicOut)
+                                .duration(500)
+                                .attr("transform", "translate(" + targetX + "," + targetY + ")")
+                                .on('end', function() {
+                                    if (i == s.size() - 1) {
+                                        intervalIDs.push(setInterval(moveInCircles, 20));
+                                    }
+                                })
+                        }
+                        else {
+                            if (i == s.size() - 1) {
+                                intervalIDs.push(setInterval(moveInCircles, 20));
+                            }
+                        }
+                    });
 
                     break;
 
+                case "references":
+
+                    if (intervalIDs.length === 0) {
+                        intervalIDs.push(setInterval(moveInCircles, 20));
+                    }
 
             }
         }
