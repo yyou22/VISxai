@@ -754,20 +754,6 @@ class DRComponent extends D3Component {
                         .duration(1500)
                         .style("opacity", 0)
 
-                    s.select('.dot')
-                        .transition('color_change')
-                        .duration(0)
-                        .style("fill", function(d) {
-                            return map_[d.target];
-                        });
-
-                    s.select('.arc')
-                        .transition('color_change')
-                        .duration(0)
-                        .style("fill", function(d) {
-                            return map_[d.pred];
-                        });
-
                     d3.csv('static/data/resnet/000/lvl4.csv', function(d, i) {
                         if (+d.vis == 1) {
                             d.xt = +d.xpost;
@@ -786,6 +772,24 @@ class DRComponent extends D3Component {
                         canvas.selectAll('.circle_group')
                             .data(data)
                             .enter();
+
+                        s.select('.dot')
+                            .interrupt()
+                            .transition('color_change')
+                            .duration(0)
+                            .style("fill", function(d) {
+                                return map_[d.target];
+                            })
+                            .attr('r', 7 / k * width / 500);
+    
+                        s.select('.arc')
+                            .interrupt()
+                            .transition('color_change')
+                            .duration(0)
+                            .style("fill", function(d) {
+                                return map_[d.pred];
+                            })
+                            .attr('d', drawArc(6.3 * width / 500, k));
 
                         s.transition()
                             .ease(d3.easeCubicOut)
@@ -828,6 +832,7 @@ class DRComponent extends D3Component {
                     cur_model = 'resnet';
 
                     d3.select('.hexbin_container')
+                        .interrupt()
                         .transition()
                         .duration(500)
                         .style('opacity', 0)
@@ -897,6 +902,7 @@ class DRComponent extends D3Component {
                     stopAnimation();
 
                     d3.select('.hexbin_container')
+                        .interrupt()
                         .transition()
                         .duration(500)
                         .style('opacity', 0)
@@ -937,14 +943,14 @@ class DRComponent extends D3Component {
                         s.attr('opacity', 1);
                         s.select('.dot')
                             .transition('color_change')
-                            .duration(100)
+                            .duration(500)
                             .style("fill", function(d) {
                                 return map_[d.target];
                             })
                             .attr('r', 7 / k * width / 500);
                         s.select('.arc')
                             .transition('color_change')
-                            .duration(100)
+                            .duration(500)
                             .style("fill", function(d) {
                                 return map_[d.pred];
                             })
