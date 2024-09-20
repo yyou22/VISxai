@@ -434,7 +434,6 @@ class DRComponent extends D3Component {
 
             InitiCanHexbin();
 
-
             //the cursor
             const img = canvas.append('image')
                 .attr('class', 'cursor')
@@ -542,6 +541,9 @@ class DRComponent extends D3Component {
                     break;
                 case 'beginning':
 
+                    d3.select('.hexbin_container')
+                        .attr('visibility', 'hidden');;
+
                     stopAllMovements();
 
                     d3.select('.panda_img')
@@ -598,12 +600,14 @@ class DRComponent extends D3Component {
                     });
 
                     s.select('.dot')
+                        .interrupt()
                         .transition('color_change')
                         .ease(d3.easeCubicOut)
                         .duration(100)
                         .style("fill", "#6C626F");
                     
                     s.select('.arc')
+                        .interrupt()
                         .transition('color_change')
                         .ease(d3.easeCubicOut)
                         .duration(100)
@@ -751,11 +755,15 @@ class DRComponent extends D3Component {
                         .style("opacity", 0)
 
                     s.select('.dot')
+                        .transition('color_change')
+                        .duration(0)
                         .style("fill", function(d) {
                             return map_[d.target];
                         });
 
                     s.select('.arc')
+                        .transition('color_change')
+                        .duration(0)
                         .style("fill", function(d) {
                             return map_[d.pred];
                         });
@@ -801,6 +809,22 @@ class DRComponent extends D3Component {
                         break;
                     }
 
+                    stopAnimation();
+
+                    s.select('.dot')
+                        .transition('color_change')
+                        .duration(0)
+                        .style("fill", function(d) {
+                            return map_[d.target];
+                        });
+
+                    s.select('.arc')
+                        .transition('color_change')
+                        .duration(0)
+                        .style("fill", function(d) {
+                            return map_[d.pred];
+                        });
+
                     cur_model = 'resnet';
 
                     d3.select('.hexbin_container')
@@ -839,10 +863,14 @@ class DRComponent extends D3Component {
                             .attr('pred', function(d) { return d.pred; });
 
                         s.select('.dot')
+                            .transition('color_change')
+                            .duration(100)
                             .style("fill", function(d) {
                                 return map_[d.target];
                             });
                         s.select('.arc')
+                            .transition('color_change')
+                            .duration(100)
                             .style("fill", function(d) {
                                 return map_[d.pred];
                             });
@@ -865,6 +893,8 @@ class DRComponent extends D3Component {
                     if (this.props.state === 'summary') {
                         stopAllMovements();
                     }
+
+                    stopAnimation();
 
                     d3.select('.hexbin_container')
                         .transition()
@@ -906,11 +936,15 @@ class DRComponent extends D3Component {
                         //force data point colors
                         s.attr('opacity', 1);
                         s.select('.dot')
+                            .transition('color_change')
+                            .duration(100)
                             .style("fill", function(d) {
                                 return map_[d.target];
                             })
                             .attr('r', 7 / k * width / 500);
                         s.select('.arc')
+                            .transition('color_change')
+                            .duration(100)
                             .style("fill", function(d) {
                                 return map_[d.pred];
                             })
