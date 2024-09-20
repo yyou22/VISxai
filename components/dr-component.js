@@ -52,13 +52,15 @@ function changeContour(num) {
 
     canvas.selectAll('.cur_contour')
         .filter(function() { 
-            return d3.select(this).style('opacity') == 1 && d3.select(this).attr('id') != 'cur_contour' + String(num); 
+            return d3.select(this).style('opacity') != 0 && d3.select(this).attr('id') != 'cur_contour' + String(num); 
         })
+        .interrupt()
         .transition()
         .duration(360)
         .style("opacity", 0)
 
     canvas.select('#cur_contour' + String(num))
+        .interrupt()
         .transition()
         .duration(360)
         .style("opacity", 1)
@@ -345,9 +347,9 @@ class DRComponent extends D3Component {
             .range([50  * this.width / 500, this.width-50  * this.width / 500])
 
         //FIXME
-        /*window.onbeforeunload = function () {
+        window.onbeforeunload = function () {
             window.scrollTo(0, 0);
-        }*/
+        }
 
         /*window.addEventListener('click' , (e) => {
             const target = e.target//.className; 
@@ -508,7 +510,7 @@ class DRComponent extends D3Component {
         var s = canvas.select('.circle_container').selectAll('.circle_group');
         
         if (props.state !== this.props.state) {
-            console.log(props.state); //FIXME
+            //console.log(props.state); //FIXME
             switch (props.state) {
                 case 'abstract':
 
