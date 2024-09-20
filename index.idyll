@@ -10,6 +10,8 @@
   /]
 [/Fixed]
 
+[ChromeRecommendation /]
+
 //scroller
 [Scroller currentState:scrollState]
 
@@ -161,7 +163,7 @@
       [conditional if:`showResNet`]
         ResNet-34[cite reference:"he2016deep"/] is a [span className:"emphasize"]convolutional neural network (CNN)[/span] that is part of the Residual Networks family, which utilizes [span className:"emphasize"]residual learning[/span]. 
         In traditional DNNs, each layer learns a full transformation from the input to the desired output.  
-        However, as networks become deeper, training becomes more challenging due to problems like the *vanishing gradient*.
+        However, as networks become deeper, training becomes more challenging due to problems like the *vanishing gradient problem*.
         [br/]
         [br/]
         Residual learning addresses this by focusing on the *residual* — the difference between the desired layer output and what earlier layers produced. 
@@ -408,7 +410,7 @@
     [Table/]
     [div className:"text"]
       [br/]
-      [span className:"emphasize2"]Can you spot the differences between the images?[/span]
+      [span className:"emphasize2"]Can you spot the differences between the natural and adversarial images?[/span]
     [/div]
 
     [var name:"showInsights3" value:false /]
@@ -485,7 +487,7 @@
 * [Equation]\max_{X' \in \text{Ball}(X, \epsilon)} L(f(X),f(X'))[/Equation] is the second part of the loss; it looks for an adversarial example [Equation]X'[/Equation] within a perturbation [Equation]\epsilon[/Equation] of [Equation]X[/Equation]. It measures how different the model's predictions are for the clean and adversarial examples. The goal is to ensure that the predictions for [Equation]X[/Equation] and [Equation]X'[/Equation] are as close as possible.
         [/div]
 
-        [div className:"panel"]
+        [div className:"text"]
         To summarize:
 1. The first part of TRADE's loss ensures the model performs well on clean data (i.e., [span className:"emphasize"]natural accuracy[/span]).
 2. The second part prevents the model from changing its prediction too much when the input is perturbed by an attack (i.e., [span className:"emphasize"]adversarial robustness[/span]).
@@ -616,11 +618,11 @@
       ### Learn More About Adversarial Attacks
 
       If you are interested in exploring adversarial attacks and related topics further, here are some other online resources:
-1. **TensorFlow Tutorial** - *Adversarial Attacks Using FGSM* ([link](https://www.tensorflow.org/tutorials/generative/adversarial_fgsm))
-2. **Pytorch Tutorial** - *Adversarial Example Generation* ([link](https://pytorch.org/tutorials/beginner/fgsm_tutorial.html))
-3. **SEI Blog (Carnegie Mellon University)** - *The Challenge of Adversarial Machine Learning* ([link](https://insights.sei.cmu.edu/blog/the-challenge-of-adversarial-machine-learning/))
-4. **AdVis.js** - *Exploring Fast Gradient Sign Method* ([link](https://jlin.xyz/advis/))
-5. **Bluff** - *Interactively Deciphering Adversarial Attacks on Deep Neural Networks* ([link](https://poloclub.github.io/bluff/))
+1. **TensorFlow Tutorial** - *Adversarial Attacks Using FGSM* ([a href:'https://www.tensorflow.org/tutorials/generative/adversarial_fgsm' target:'_blank']link[/a])
+2. **Pytorch Tutorial** - *Adversarial Example Generation* ([a href:'https://pytorch.org/tutorials/beginner/fgsm_tutorial.html' target:'_blank']link[/a])
+3. **SEI Blog (Carnegie Mellon University)** - *The Challenge of Adversarial Machine Learning* ([a href:'https://insights.sei.cmu.edu/blog/the-challenge-of-adversarial-machine-learning/' target:'_blank']link[/a])
+4. **AdVis.js** - *Exploring Fast Gradient Sign Method* ([a href:'https://jlin.xyz/advis/' target:'_blank']link[/a])
+5. **Bluff** - *Interactively Deciphering Adversarial Attacks on Deep Neural Networks* ([a href:'https://poloclub.github.io/bluff/' target:'_blank']link[/a])
     [/div]
 
   [/Step]
