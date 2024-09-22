@@ -776,7 +776,7 @@ class DRComponent extends D3Component {
                         s.select('.dot')
                             .interrupt()
                             .transition('color_change')
-                            .duration(0)
+                            .duration(500)
                             .style("fill", function(d) {
                                 return map_[d.target];
                             })
@@ -785,7 +785,7 @@ class DRComponent extends D3Component {
                         s.select('.arc')
                             .interrupt()
                             .transition('color_change')
-                            .duration(0)
+                            .duration(500)
                             .style("fill", function(d) {
                                 return map_[d.pred];
                             })
