@@ -1,4 +1,6 @@
-# Implementation of Intro to Adversarial Attacks
+# A Beginner's Introduction to Adversarial Attacks
+
+![a beginner's introduction to adversarial attacks](./visxai.gif)
 
 `idyll`
 
